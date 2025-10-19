@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Empresas</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+  <h2>Empresas Parceiras</h2>
+  <a th:href="@{/}">Voltar</a> | <a th:href="@{/empresas/nova}">Nova Empresa</a>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="e : ${empresas}">
+        <td th:text="${e.id}">1</td>
+        <td th:text="${e.nome}">Nome</td>
+        <td th:text="${e.email}">email</td>
+        <td>
+          <a th:href="@{|/empresas/ver/${e.id}|}">Ver</a> |
+          <a th:href="@{|/empresas/editar/${e.id}|}">Editar</a> |
+          <a th:href="@{|/empresas/deletar/${e.id}|}" onclick="return confirm('Confirma?')">Excluir</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

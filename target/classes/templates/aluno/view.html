@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Aluno</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+  <h2>Aluno</h2>
+  <p>ID: <span th:text="${aluno.id}"></span></p>
+  <p>Nome: <span th:text="${aluno.nome}"></span></p>
+  <p>Email: <span th:text="${aluno.email}"></span></p>
+  <p>CPF: <span th:text="${aluno.cpf}"></span></p>
+  <p>RG: <span th:text="${aluno.rg}"></span></p>
+  <p>Endereço: <span th:text="${aluno.endereco}"></span></p>
+  <p>Curso: <span th:text="${aluno.curso}"></span></p>
+  <p>Login: <span th:text="${aluno.login}"></span></p>
+  <p>Saldo de Moedas: <span th:text="${aluno.saldoMoedas}"></span></p>
+  <p>Instituição: <span th:text="${aluno.instituicao != null ? aluno.instituicao.nome : ''}"></span></p>
+  <a th:href="@{/alunos}">Voltar</a>
+</body>
+</html>

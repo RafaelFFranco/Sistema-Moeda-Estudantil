@@ -1,0 +1,61 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Maven: Clean Package (Fast)",
+      "type": "shell",
+      "command": "mvn",
+      "args": [
+        "clean",
+        "package",
+        "-DskipTests",
+        "-q"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Java: Run Application (Fast)",
+      "type": "shell",
+      "command": "java",
+      "args": [
+        "-noverify",
+        "-XX:TieredStopAtLevel=1",
+        "-jar",
+        "target/*.jar"
+      ],
+      "group": "build",
+      "dependsOn": "Maven: Clean Package (Fast)",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Spring Boot: Run Dev",
+      "type": "shell",
+      "command": "mvn",
+      "args": [
+        "spring-boot:run",
+        "-Dspring-boot.run.jvmArguments=-noverify -XX:TieredStopAtLevel=1"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

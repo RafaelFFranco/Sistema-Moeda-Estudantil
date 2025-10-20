@@ -1,0 +1,35 @@
+{
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.compile.nullAnalysis.mode": "disabled",
+  "java.debug.settings.onBuildFailureProceed": true,
+  "java.debug.settings.hotCodeReplace": "auto",
+  "java.debug.settings.enableRunDebugCodeLens": true,
+  "java.saveActions.organizeImports": true,
+  "java.import.maven.enabled": true,
+  "java.maven.downloadSources": true,
+  "java.maven.updateSnapshots": true,
+  "java.autobuild.enabled": true,
+  "java.maxConcurrentBuilds": 1,
+  "java.project.importOnFirstTimeStartup": "automatic",
+  "java.project.resourceFilters": [
+    "node_modules",
+    ".git"
+  ],
+  "java.project.referencedLibraries": [
+    "lib/**/*.jar"
+  ],
+  "files.exclude": {
+    "**/target": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "search.exclude": {
+    "**/target": true,
+    "**/node_modules": true
+  },
+  "files.watcherExclude": {
+    "**/target/**": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true
+  }
+}

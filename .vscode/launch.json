@@ -1,0 +1,34 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Run MoedaEstudantilApplication (Fast)",
+      "request": "launch",
+      "mainClass": "br.edu.moedaestudantil.MoedaEstudantilApplication",
+      "vmArgs": "-noverify -XX:TieredStopAtLevel=1 -Dspring.profiles.active=dev",
+      "args": "",
+      "console": "integratedTerminal",
+      "env": {
+        "SPRING_PROFILES_ACTIVE": "dev"
+      }
+    },
+    {
+      "type": "java",
+      "name": "Debug MoedaEstudantilApplication",
+      "request": "launch",
+      "mainClass": "br.edu.moedaestudantil.MoedaEstudantilApplication",
+      "console": "integratedTerminal",
+      "env": {
+        "SPRING_PROFILES_ACTIVE": "dev"
+      }
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot: Run",
+      "request": "launch",
+      "mainClass": "br.edu.moedaestudantil.MoedaEstudantilApplication",
+      "vmArgs": "-noverify -XX:TieredStopAtLevel=1",
+      "console": "integratedTerminal"
+    }
+  ]
+}

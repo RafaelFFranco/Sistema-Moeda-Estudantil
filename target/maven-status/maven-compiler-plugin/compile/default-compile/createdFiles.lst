@@ -1,0 +1,16 @@
+br\edu\moedaestudantil\config\DataInitializer.class
+br\edu\moedaestudantil\repository\AlunoRepository.class
+br\edu\moedaestudantil\controller\EmpresaController.class
+br\edu\moedaestudantil\model\EmpresaParceira.class
+br\edu\moedaestudantil\controller\AlunoController.class
+br\edu\moedaestudantil\config\WebConfig.class
+br\edu\moedaestudantil\controller\HomeController.class
+br\edu\moedaestudantil\dto\AlunoForm.class
+br\edu\moedaestudantil\repository\EmpresaRepository.class
+br\edu\moedaestudantil\MoedaEstudantilApplication.class
+br\edu\moedaestudantil\service\EmpresaService.class
+br\edu\moedaestudantil\model\Aluno.class
+br\edu\moedaestudantil\model\Instituicao.class
+br\edu\moedaestudantil\dto\EmpresaForm.class
+br\edu\moedaestudantil\repository\InstituicaoRepository.class
+br\edu\moedaestudantil\service\AlunoService.class

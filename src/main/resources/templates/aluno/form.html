@@ -18,10 +18,12 @@
     <label>Login: <input th:field="*{login}" /></label><br/>
     <label>Senha: <input th:field="*{senha}" type="password"/></label><br/>
     <label>Instituição:
-      <select th:field="*{instituicao}">
+      <select name="instituicaoId">
+        <option value="">Selecione uma instituição</option>
         <option th:each="inst: ${instituicoes}" 
-                th:value="${inst}" 
-                th:text="${inst.nome}">Inst</option>
+                th:value="${inst.id}" 
+                th:text="${inst.nome}"
+                th:selected="${aluno.instituicao != null and aluno.instituicao.id == inst.id}">Inst</option>
       </select>
     </label><br/>
     <button type="submit">Salvar</button>

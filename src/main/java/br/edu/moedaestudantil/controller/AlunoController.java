@@ -37,11 +37,21 @@ public class AlunoController {
     }
 
     @PostMapping("/salvar")
-    public String save(@Valid @ModelAttribute("aluno") Aluno aluno, BindingResult bindingResult, Model model) {
+    public String save(@Valid @ModelAttribute("aluno") Aluno aluno, 
+                      @RequestParam("instituicaoId") Long instituicaoId,
+                      BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("instituicoes", instituicaoRepository.findAll());
             return "aluno/form";
         }
+        
+        // Set the institution from the selected ID
+        if (instituicaoId != null) {
+            Instituicao instituicao = instituicaoRepository.findById(instituicaoId)
+                .orElseThrow(() -> new IllegalArgumentException("Instituição inválida"));
+            aluno.setInstituicao(instituicao);
+        }
+        
         alunoService.save(aluno);
         return "redirect:/alunos";
     }

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<!-- Footer fragment -->
+<div th:fragment="footer">
+  <div class="container">
+    <footer class="site-footer card small muted">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>© <span th:text="${#dates.format(#dates.createNow(),'yyyy')}">2025</span> Moeda Estudantil</div>
+        <div>Desenvolvido por Equipe — <a href="#" class="small">Suporte</a></div>
+      </div>
+    </footer>
+  </div>
+</div>

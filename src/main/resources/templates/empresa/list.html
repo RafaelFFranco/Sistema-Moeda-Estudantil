@@ -6,9 +6,13 @@
   <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-  <h2>Empresas Parceiras</h2>
-  <a th:href="@{/}">Voltar</a> | <a th:href="@{/empresas/nova}">Nova Empresa</a>
-  <table border="1">
+  <div th:replace="fragments/header :: header"></div>
+
+  <div class="container">
+    <div class="breadcrumbs"><a th:href="@{/}">Home</a> <span>/</span> <a th:href="@{/empresas}">Empresas</a></div>
+
+    <section class="card">
+      <table>
     <thead>
       <tr>
         <th>ID</th>
@@ -22,13 +26,28 @@
         <td th:text="${e.id}">1</td>
         <td th:text="${e.nome}">Nome</td>
         <td th:text="${e.email}">email</td>
-        <td>
-          <a th:href="@{|/empresas/ver/${e.id}|}">Ver</a> |
-          <a th:href="@{|/empresas/editar/${e.id}|}">Editar</a> |
-          <a th:href="@{|/empresas/deletar/${e.id}|}" onclick="return confirm('Confirma?')">Excluir</a>
+        <td class="td-actions">
+          <a class="action-link view" th:href="@{|/empresas/ver/${e.id}|}" title="Ver">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5C7 5 2.7 8.11 1 12c1.7 3.89 6 7 11 7s9.3-3.11 11-7c-1.7-3.89-6-7-11-7z" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Ver
+          </a>
+          <a class="action-link edit" th:href="@{|/empresas/editar/${e.id}|}" title="Editar">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21v-3.75L14.06 6.19l3.75 3.75L6.75 21H3z" stroke="#1E40AF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" stroke="#1E40AF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Editar
+          </a>
+          <a class="action-link delete confirm-delete" th:href="@{|/empresas/deletar/${e.id}|}" title="Excluir">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 11v6" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 11v6" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Excluir
+          </a>
         </td>
       </tr>
     </tbody>
-  </table>
+      </table>
+    </section>
+
+    </section>
+    <div th:replace="fragments/footer :: footer"></div>
+  </div>
+  <script src="/js/main.js"></script>
 </body>
 </html>

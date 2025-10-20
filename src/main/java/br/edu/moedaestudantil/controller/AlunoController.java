@@ -24,8 +24,9 @@ public class AlunoController {
     }
 
     @GetMapping
-    public String list(Model model) {
-        model.addAttribute("alunos", alunoService.findAll());
+    public String list(@RequestParam(value = "q", required = false) String q, Model model) {
+        model.addAttribute("alunos", alunoService.findByQuery(q));
+        model.addAttribute("q", q);
         return "aluno/list";
     }
 

@@ -6,28 +6,69 @@
   <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-  <h2 th:text="${aluno.id != null ? 'Editar Aluno' : 'Novo Aluno'}">Form</h2>
-  <form th:action="@{/alunos/salvar}" th:object="${aluno}" method="post">
-    <input type="hidden" th:field="*{id}">
-    <label>Nome: <input th:field="*{nome}" /></label><br/>
-    <label>Email: <input th:field="*{email}" /></label><br/>
-    <label>CPF: <input th:field="*{cpf}" /></label><br/>
-    <label>RG: <input th:field="*{rg}" /></label><br/>
-    <label>Endereço: <input th:field="*{endereco}" /></label><br/>
-    <label>Curso: <input th:field="*{curso}" /></label><br/>
-    <label>Login: <input th:field="*{login}" /></label><br/>
-    <label>Senha: <input th:field="*{senha}" type="password"/></label><br/>
-    <label>Instituição:
-      <select name="instituicaoId">
-        <option value="">Selecione uma instituição</option>
-        <option th:each="inst: ${instituicoes}" 
-                th:value="${inst.id}" 
-                th:text="${inst.nome}"
-                th:selected="${aluno.instituicao != null and aluno.instituicao.id == inst.id}">Inst</option>
-      </select>
-    </label><br/>
-    <button type="submit">Salvar</button>
-  </form>
-  <a th:href="@{/alunos}">Voltar</a>
+  <div th:replace="fragments/header :: header"></div>
+
+  <div class="container">
+    <div class="breadcrumbs"><a th:href="@{/}">Home</a> <span>/</span> <a th:href="@{/alunos}">Alunos</a> <span>/</span> <span th:text="${aluno.id != null ? 'Editar' : 'Novo'}">Novo</span></div>
+
+    <section class="card">
+      <form th:action="@{/alunos/salvar}" th:object="${aluno}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div class="form-grid">
+          <div>
+            <label>Nome</label>
+            <input th:field="*{nome}" />
+          </div>
+          <div>
+            <label>Email</label>
+            <input type="email" th:field="*{email}" />
+          </div>
+          <div>
+            <label>CPF</label>
+            <input th:field="*{cpf}" />
+          </div>
+          <div>
+            <label>RG</label>
+            <input th:field="*{rg}" />
+          </div>
+          <div>
+            <label>Endereço</label>
+            <input th:field="*{endereco}" />
+          </div>
+          <div>
+            <label>Curso</label>
+            <input th:field="*{curso}" />
+          </div>
+          <div>
+            <label>Login</label>
+            <input th:field="*{login}" />
+          </div>
+          <div>
+            <label>Senha</label>
+            <input th:field="*{senha}" type="password"/>
+          </div>
+          <div>
+            <label>Instituição</label>
+            <select name="instituicaoId">
+              <option value="">Selecione uma instituição</option>
+              <option th:each="inst: ${instituicoes}"
+                      th:value="${inst.id}"
+                      th:text="${inst.nome}"
+                      th:selected="${aluno.instituicao != null and aluno.instituicao.id == inst.id}">Inst</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">Salvar</button>
+          <a class="btn btn-secondary" th:href="@{/alunos}">Cancelar</a>
+        </div>
+      </form>
+    </section>
+
+    </section>
+    <div th:replace="fragments/footer :: footer"></div>
+  </div>
+  <script src="/js/main.js"></script>
 </body>
 </html>

@@ -19,8 +19,9 @@ public class EmpresaController {
     }
 
     @GetMapping
-    public String list(Model model) {
-        model.addAttribute("empresas", empresaService.findAll());
+    public String list(@RequestParam(value = "q", required = false) String q, Model model) {
+        model.addAttribute("empresas", empresaService.findByQuery(q));
+        model.addAttribute("q", q);
         return "empresa/list";
     }
 

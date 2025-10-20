@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!-- Header fragment -->
+<div th:fragment="header">
+  <div class="container">
+    <header class="site-header card">
+      <div class="brand">
+        <img src="/img/logo.svg" alt="Logo" class="logo">
+        <div>
+          <h1 style="margin:0; font-size:18px;">Moeda Estudantil</h1>
+          <div class="small muted">Gerencie alunos, empresas e saldos</div>
+        </div>
+      </div>
+
+      <div class="header-right" style="display:flex; gap:12px; align-items:center;">
+        <form th:action="@{${#httpServletRequest.requestURI}}" method="get" onsubmit="return false;" class="search-form">
+          <div class="search" data-action="search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-4.35-4.35" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="11" cy="11" r="6" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle></svg>
+            <input id="search-input" name="q" placeholder="Buscar por nome ou email..."/>
+          </div>
+        </form>
+
+        <nav class="nav-links">
+          <a th:href="@{/}" class="small muted">Home</a>
+          <a th:href="@{/alunos}">Alunos</a>
+          <a th:href="@{/empresas}">Empresas</a>
+        </nav>
+      </div>
+    </header>
+  </div>
+</div>

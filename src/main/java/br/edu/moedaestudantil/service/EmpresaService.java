@@ -18,6 +18,11 @@ public class EmpresaService {
         return empresaRepository.findAll(); 
     }
 
+    public List<EmpresaParceira> findByQuery(String q) {
+        if (q == null || q.isBlank()) return findAll();
+        return empresaRepository.findByNomeContainingIgnoreCaseOrEmailContainingIgnoreCase(q, q);
+    }
+
     public Optional<EmpresaParceira> findById(Long id) { 
         return empresaRepository.findById(id); 
     }

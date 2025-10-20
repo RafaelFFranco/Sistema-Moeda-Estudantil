@@ -7,4 +7,7 @@ import java.util.Optional;
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
     Optional<Aluno> findByEmail(String email);
     Optional<Aluno> findByCpf(String cpf);
+    
+    // Search by name or email (case-insensitive, contains)
+    java.util.List<Aluno> findByNomeContainingIgnoreCaseOrEmailContainingIgnoreCase(String nome, String email);
 }

@@ -6,17 +6,27 @@
   <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-  <h2>Aluno</h2>
-  <p>ID: <span th:text="${aluno.id}"></span></p>
-  <p>Nome: <span th:text="${aluno.nome}"></span></p>
-  <p>Email: <span th:text="${aluno.email}"></span></p>
-  <p>CPF: <span th:text="${aluno.cpf}"></span></p>
-  <p>RG: <span th:text="${aluno.rg}"></span></p>
-  <p>Endereço: <span th:text="${aluno.endereco}"></span></p>
-  <p>Curso: <span th:text="${aluno.curso}"></span></p>
-  <p>Login: <span th:text="${aluno.login}"></span></p>
-  <p>Saldo de Moedas: <span th:text="${aluno.saldoMoedas}"></span></p>
-  <p>Instituição: <span th:text="${aluno.instituicao != null ? aluno.instituicao.nome : ''}"></span></p>
-  <a th:href="@{/alunos}">Voltar</a>
+  <div th:replace="fragments/header :: header"></div>
+
+  <div class="container">
+    <div class="breadcrumbs"><a th:href="@{/}">Home</a> <span>/</span> <a th:href="@{/alunos}">Alunos</a> <span>/</span> <span>Ver</span></div>
+
+    <section class="card">
+      <p><strong>ID:</strong> <span th:text="${aluno.id}"></span></p>
+      <p><strong>Nome:</strong> <span th:text="${aluno.nome}"></span></p>
+      <p><strong>Email:</strong> <span th:text="${aluno.email}"></span></p>
+      <p><strong>CPF:</strong> <span th:text="${aluno.cpf}"></span></p>
+      <p><strong>RG:</strong> <span th:text="${aluno.rg}"></span></p>
+      <p><strong>Endereço:</strong> <span th:text="${aluno.endereco}"></span></p>
+      <p><strong>Curso:</strong> <span th:text="${aluno.curso}"></span></p>
+      <p><strong>Login:</strong> <span th:text="${aluno.login}"></span></p>
+      <p><strong>Saldo de Moedas:</strong> <span class="value-highlight" th:text="${aluno.saldoMoedas}"></span></p>
+      <p><strong>Instituição:</strong> <span th:text="${aluno.instituicao != null ? aluno.instituicao.nome : ''}"></span></p>
+    </section>
+
+    </section>
+    <div th:replace="fragments/footer :: footer"></div>
+  </div>
+  <script src="/js/main.js"></script>
 </body>
 </html>

@@ -15,23 +15,54 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   });
 
+  // Show/hide clear button based on input value
+  function toggleClearButton() {
+    var searchInput = document.getElementById('search-input');
+    var clearBtn = document.querySelector('.clear-btn');
+    if (searchInput && clearBtn) {
+      clearBtn.style.display = searchInput.value.length > 0 ? 'block' : 'none';
+    }
+  }
+
   // search submit on Enter
   var searchInput = document.getElementById('search-input');
   if(searchInput){
+    // Check on input change
+    searchInput.addEventListener('input', toggleClearButton);
+    
+    // Initial check
+    toggleClearButton();
+    
+    // Submit on Enter
     searchInput.addEventListener('keydown', function(e){
       if(e.key === 'Enter'){
         e.preventDefault();
         performSearch(searchInput.value);
       }
     });
+    
+    // Submit on form submit (e.g., when clicking search icon)
+    searchInput.form?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      performSearch(searchInput.value);
+    });
   }
 
-  // optional: clicking a search icon in the header if present
+  // Clear button handler
   document.body.addEventListener('click', function(e){
-    var el = e.target.closest && e.target.closest('[data-action="search"]');
-    if(!el) return;
-    var inp = document.getElementById('search-input');
-    if(inp) performSearch(inp.value);
+    if(e.target.closest('.clear-btn')) {
+      var searchInput = document.getElementById('search-input');
+      if(searchInput) {
+        searchInput.value = '';
+        searchInput.focus();
+        toggleClearButton();
+        // If we're on a search page, clear the search
+        var path = window.location.pathname;
+        if(path.includes('/alunos') || path.includes('/empresas')) {
+          window.location.href = path.split('?')[0];
+        }
+      }
+    }
   });
 
 });

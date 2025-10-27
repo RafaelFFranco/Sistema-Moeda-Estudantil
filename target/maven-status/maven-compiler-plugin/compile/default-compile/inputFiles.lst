@@ -1,7 +1,11 @@
 C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\repository\InstituicaoRepository.java
+C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\service\MoedaService.java
 C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\config\DataInitializer.java
 C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\controller\EmpresaController.java
 C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\model\Aluno.java
+C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\model\Transacao.java
+C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\controller\MoedaController.java
+C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\repository\TransacaoRepository.java
 C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\repository\EmpresaRepository.java
 C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\MoedaEstudantilApplication.java
 C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\config\WebConfig.java

@@ -11,20 +11,79 @@
   <div class="container">
     <div class="breadcrumbs"><a th:href="@{/}">Home</a> <span>/</span> <a th:href="@{/alunos}">Alunos</a> <span>/</span> <span>Ver</span></div>
 
+    <div class="page-header">
+      <h2 style="margin:0; font-size:28px; color: var(--gray-900);">Detalhes do Aluno</h2>
+      <div style="display:flex; gap: var(--spacing-sm);">
+        <a th:href="@{'/moedas/adicionar/' + ${aluno.id}}" class="btn btn-success">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Adicionar Moedas
+        </a>
+        <a th:href="@{'/moedas/remover/' + ${aluno.id}}" class="btn" style="background: var(--error); color: white;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Remover Moedas
+        </a>
+        <a th:href="@{/alunos}" class="btn btn-secondary">Voltar</a>
+      </div>
+    </div>
+
     <section class="card">
-      <p><strong>ID:</strong> <span th:text="${aluno.id}"></span></p>
-      <p><strong>Nome:</strong> <span th:text="${aluno.nome}"></span></p>
-      <p><strong>Email:</strong> <span th:text="${aluno.email}"></span></p>
-      <p><strong>CPF:</strong> <span th:text="${aluno.cpf}"></span></p>
-      <p><strong>RG:</strong> <span th:text="${aluno.rg}"></span></p>
-      <p><strong>Endereço:</strong> <span th:text="${aluno.endereco}"></span></p>
-      <p><strong>Curso:</strong> <span th:text="${aluno.curso}"></span></p>
-      <p><strong>Login:</strong> <span th:text="${aluno.login}"></span></p>
-      <p><strong>Saldo de Moedas:</strong> <span class="value-highlight" th:text="${aluno.saldoMoedas}"></span></p>
-      <p><strong>Instituição:</strong> <span th:text="${aluno.instituicao != null ? aluno.instituicao.nome : ''}"></span></p>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--spacing-lg);">
+        <div style="padding: var(--spacing-md); border-left: 3px solid var(--royal-blue); background: rgba(37, 99, 235, 0.03); border-radius: var(--radius-sm);">
+          <div class="small muted" style="margin-bottom: var(--spacing-xs);">ID</div>
+          <div style="font-weight: 600; color: var(--gray-900);" th:text="${aluno.id}"></div>
+        </div>
+
+        <div style="padding: var(--spacing-md); border-left: 3px solid var(--royal-blue); background: rgba(37, 99, 235, 0.03); border-radius: var(--radius-sm);">
+          <div class="small muted" style="margin-bottom: var(--spacing-xs);">Nome</div>
+          <div style="font-weight: 600; color: var(--gray-900);" th:text="${aluno.nome}"></div>
+        </div>
+
+        <div style="padding: var(--spacing-md); border-left: 3px solid var(--royal-blue); background: rgba(37, 99, 235, 0.03); border-radius: var(--radius-sm);">
+          <div class="small muted" style="margin-bottom: var(--spacing-xs);">Email</div>
+          <div style="font-weight: 600; color: var(--gray-900);" th:text="${aluno.email}"></div>
+        </div>
+
+        <div style="padding: var(--spacing-md); border-left: 3px solid var(--royal-blue); background: rgba(37, 99, 235, 0.03); border-radius: var(--radius-sm);">
+          <div class="small muted" style="margin-bottom: var(--spacing-xs);">CPF</div>
+          <div style="font-weight: 600; color: var(--gray-900);" th:text="${aluno.cpf}"></div>
+        </div>
+
+        <div style="padding: var(--spacing-md); border-left: 3px solid var(--royal-blue); background: rgba(37, 99, 235, 0.03); border-radius: var(--radius-sm);">
+          <div class="small muted" style="margin-bottom: var(--spacing-xs);">RG</div>
+          <div style="font-weight: 600; color: var(--gray-900);" th:text="${aluno.rg}"></div>
+        </div>
+
+        <div style="padding: var(--spacing-md); border-left: 3px solid var(--royal-blue); background: rgba(37, 99, 235, 0.03); border-radius: var(--radius-sm);">
+          <div class="small muted" style="margin-bottom: var(--spacing-xs);">Endereço</div>
+          <div style="font-weight: 600; color: var(--gray-900);" th:text="${aluno.endereco}"></div>
+        </div>
+
+        <div style="padding: var(--spacing-md); border-left: 3px solid var(--royal-blue); background: rgba(37, 99, 235, 0.03); border-radius: var(--radius-sm);">
+          <div class="small muted" style="margin-bottom: var(--spacing-xs);">Curso</div>
+          <div style="font-weight: 600; color: var(--gray-900);" th:text="${aluno.curso}"></div>
+        </div>
+
+        <div style="padding: var(--spacing-md); border-left: 3px solid var(--royal-blue); background: rgba(37, 99, 235, 0.03); border-radius: var(--radius-sm);">
+          <div class="small muted" style="margin-bottom: var(--spacing-xs);">Login</div>
+          <div style="font-weight: 600; color: var(--gray-900);" th:text="${aluno.login}"></div>
+        </div>
+
+        <div style="padding: var(--spacing-md); border-left: 3px solid var(--mint-green); background: rgba(16, 185, 129, 0.08); border-radius: var(--radius-sm);">
+          <div class="small muted" style="margin-bottom: var(--spacing-xs);">Saldo de Moedas</div>
+          <div class="value-highlight" th:text="${aluno.saldoMoedas}"></div>
+        </div>
+
+        <div style="padding: var(--spacing-md); border-left: 3px solid var(--royal-blue); background: rgba(37, 99, 235, 0.03); border-radius: var(--radius-sm);">
+          <div class="small muted" style="margin-bottom: var(--spacing-xs);">Instituição</div>
+          <div style="font-weight: 600; color: var(--gray-900);" th:text="${aluno.instituicao != null ? aluno.instituicao.nome : 'Não informada'}">Não informada</div>
+        </div>
+      </div>
     </section>
 
-    </section>
     <div th:replace="fragments/footer :: footer"></div>
   </div>
   <script src="/js/main.js"></script>

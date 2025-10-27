@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Histórico de Transações</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+  <div th:replace="fragments/header :: header"></div>
+
+  <div class="container">
+    <div class="breadcrumbs"><a th:href="@{/}">Home</a> <span>/</span> <a th:href="@{/moedas}">Moedas</a></div>
+
+    <div class="page-header">
+      <h2 style="margin:0; font-size:28px; color: var(--gray-900);">Histórico de Transações</h2>
+      <a href="/moedas/transferir" class="btn btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17 1l4 4-4 4M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 0 1-4 4H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Transferir Moedas
+      </a>
+    </div>
+
+    <section class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Data/Hora</th>
+            <th>Tipo</th>
+            <th>De</th>
+            <th>Para</th>
+            <th>Quantidade</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:if="${transacoes != null and !transacoes.isEmpty()}" th:each="t : ${transacoes}">
+            <td th:text="${#temporals.format(t.dataHora, 'dd/MM/yyyy HH:mm')}">01/01/2025 10:00</td>
+            <td>
+              <span class="badge" 
+                    th:classappend="${t.tipo.name() == 'TRANSFERENCIA'} ? 'badge-primary' : ''"
+                    th:classappend="${t.tipo.name() == 'ADICAO'} ? 'badge-success' : ''"
+                    th:classappend="${t.tipo.name() == 'REMOCAO'} ? 'badge-error' : ''"
+                    th:text="${t.tipo.getDescricao()}">
+                Transferência
+              </span>
+            </td>
+            <td th:text="${t.alunoOrigem != null ? t.alunoOrigem.nome : '—'}">João Silva</td>
+            <td th:text="${t.alunoDestino != null ? t.alunoDestino.nome : '—'}">Maria Santos</td>
+            <td class="text-right">
+              <span class="value-highlight" th:text="${t.quantidadeMoedas}">100</span>
+            </td>
+            <td th:text="${t.descricao}">Pagamento de serviços</td>
+          </tr>
+          <tr th:if="${transacoes == null or transacoes.isEmpty()}">
+            <td colspan="6" style="text-align: center; padding: 32px;">
+              <div class="empty-state">
+                <p>Nenhuma transação registrada ainda.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div th:replace="fragments/footer :: footer"></div>
+  </div>
+  <script src="/js/main.js"></script>
+</body>
+</html>
+

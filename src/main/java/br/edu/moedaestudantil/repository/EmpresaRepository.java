@@ -6,6 +6,7 @@ import java.util.Optional;
 
 public interface EmpresaRepository extends JpaRepository<EmpresaParceira, Long> {
     Optional<EmpresaParceira> findByEmail(String email);
+    Optional<EmpresaParceira> findByLogin(String login);
 
     java.util.List<EmpresaParceira> findByNomeContainingIgnoreCaseOrEmailContainingIgnoreCase(String nome, String email);
 }

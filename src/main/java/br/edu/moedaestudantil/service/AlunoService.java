@@ -18,6 +18,11 @@ public class AlunoService {
         return alunoRepository.findAll(); 
     }
 
+    public List<Aluno> findByInstituicaoId(Long instituicaoId) {
+        if (instituicaoId == null) return java.util.Collections.emptyList();
+        return alunoRepository.findByInstituicaoId(instituicaoId);
+    }
+
     public List<Aluno> findByQuery(String q) {
         if (q == null || q.isBlank()) return findAll();
         return alunoRepository.findByNomeContainingIgnoreCaseOrEmailContainingIgnoreCase(q, q);
@@ -25,6 +30,10 @@ public class AlunoService {
 
     public Optional<Aluno> findById(Long id) { 
         return alunoRepository.findById(id); 
+    }
+
+    public Optional<Aluno> findByLogin(String login) {
+        return alunoRepository.findByLogin(login);
     }
 
     public Aluno save(Aluno aluno) { 

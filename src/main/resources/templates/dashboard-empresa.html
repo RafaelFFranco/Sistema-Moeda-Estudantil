@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Painel da Empresa</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+  <div th:replace="fragments/header :: header"></div>
+
+  <div class="container">
+    <div class="breadcrumbs"><a th:href="@{/}">Home</a> <span>/</span> <span>Painel da Empresa</span></div>
+
+    <main class="card">
+      <h2>Painel da Empresa Parceira</h2>
+      <p class="small">Total de empresas: <span th:text="${totalEmpresas} ?: 0">0</span></p>
+
+      <section class="home-grid">
+        <div class="home-card">
+          <a th:href="@{/empresas}">Gerenciar Empresa</a>
+          <p class="small">Visualizar e editar perfil da empresa</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div th:replace="fragments/footer :: footer"></div>
+  <script src="/js/main.js"></script>
+</body>
+</html>

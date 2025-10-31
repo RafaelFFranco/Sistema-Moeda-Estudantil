@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <style>
+        .login-container { max-width: 420px; margin: 60px auto; padding: 24px; border: 1px solid #ddd; border-radius: 8px; background: #fff; }
+        .login-field { margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h2>Entrar</h2>
+    <div th:if="${error}" style="color:#a94442; margin-bottom:12px;" th:text="${error}"></div>
+    <form th:action="@{/login}" method="post">
+        <div class="login-field">
+            <label for="username">Usuário</label>
+            <input type="text" id="username" name="username" required class="form-control" />
+        </div>
+        <div class="login-field">
+            <label for="password">Senha</label>
+            <input type="password" id="password" name="password" required class="form-control" />
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Entrar</button>
+            <a th:href="@{/}" style="margin-left:8px;">Voltar</a>
+        </div>
+    </form>
+    <hr />
+    <div style="margin-top:12px;">
+        <p>Não tem conta? Cadastre-se como:</p>
+        <div style="display:flex; gap:8px;">
+            <button type="button" class="btn" th:onclick="|window.location='@{/alunos/novo}'|" style="background:#28a745; color:#fff; padding:8px 12px; border:0; border-radius:4px; cursor:pointer;">Aluno</button>
+            <button type="button" class="btn" th:onclick="|window.location='@{/empresas/nova}'|" style="background:#17a2b8; color:#fff; padding:8px 12px; border:0; border-radius:4px; cursor:pointer;">Empresa</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

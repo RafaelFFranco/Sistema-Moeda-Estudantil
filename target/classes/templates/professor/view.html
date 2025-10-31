@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Professor</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+  <div th:replace="fragments/header :: header"></div>
+
+  <div class="container">
+    <div class="breadcrumbs"><a th:href="@{/}">Home</a> <span>/</span> <a th:href="@{/professores}">Professores</a> <span>/</span> <span th:text="${professor.nome}">Professor</span></div>
+
+    <section class="card">
+      <h3 th:text="${professor.nome}">Nome</h3>
+      <div class="details-grid">
+        <div>
+          <strong>Email</strong>
+          <div th:text="${professor.email}">email</div>
+        </div>
+        <div>
+          <strong>CPF</strong>
+          <div th:text="${professor.cpf}">cpf</div>
+        </div>
+        <div>
+          <strong>Disciplina</strong>
+          <div th:text="${professor.disciplina}">disciplina</div>
+        </div>
+        <div>
+          <strong>Instituição</strong>
+          <div th:text="${professor.instituicao != null ? professor.instituicao.nome : ''}">inst</div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <a class="btn btn-secondary" th:href="@{/professores}">Voltar</a>
+        <a class="btn btn-primary" th:href="@{|/professores/editar/${professor.id}|}">Editar</a>
+      </div>
+    </section>
+
+    <div th:replace="fragments/footer :: footer"></div>
+  </div>
+  <script src="/js/main.js"></script>
+</body>
+</html>

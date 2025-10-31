@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Trocar Moedas</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+  <div th:replace="fragments/header :: header"></div>
+
+  <div class="container">
+    <div class="breadcrumbs"><a th:href="@{/}">Home</a> <span>/</span> <span>Trocar Moedas</span></div>
+
+    <main class="card">
+      <h2>Resgatar Vantagens</h2>
+      <p>Saldo atual: <strong th:text="${aluno.saldoMoedas} ?: 0">0</strong></p>
+
+      <section>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Vantagem</th>
+              <th>Descrição</th>
+              <th>Custo (moedas)</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="v : ${vantagens}">
+              <td th:text="${v.nome}"></td>
+              <td th:text="${v.descricao}"></td>
+              <td th:text="${v.custoMoedas}"></td>
+              <td>
+                <form th:action="@{/moedas/trocar}" method="post">
+                  <input type="hidden" name="vantagemId" th:value="${v.id}" />
+                  <button type="submit" class="btn">Resgatar</button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <div th:replace="fragments/footer :: footer"></div>
+  <script src="/js/main.js"></script>
+</body>
+</html>

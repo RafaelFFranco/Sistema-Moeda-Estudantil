@@ -28,14 +28,12 @@
     <section class="card">
       <form method="post" action="/moedas/transferir">
         <div class="form-grid">
-          <div>
-            <label for="alunoOrigemId">Aluno Origem *</label>
-            <select id="alunoOrigemId" name="alunoOrigemId" required>
-              <option value="">Selecione...</option>
-              <option th:each="a : ${alunos}" th:value="${a.id}" th:text="${a.nome + ' - Saldo: ' + a.saldoMoedas + ' moedas'}">
-                João Silva - Saldo: 100 moedas
-              </option>
-            </select>
+          <div th:if="${isProfessor}">
+            <label>Professor (origem)</label>
+            <div>
+              <strong th:text="${professor != null ? professor.nome : 'Professor autenticado'}">Professor</strong>
+              <span> - Saldo: <span th:text="${professor != null ? professor.saldoMoedas : 0}">0</span> moedas</span>
+            </div>
           </div>
 
           <div>

@@ -37,11 +37,9 @@
           <tr th:if="${transacoes != null and !transacoes.isEmpty()}" th:each="t : ${transacoes}">
             <td th:text="${#temporals.format(t.dataHora, 'dd/MM/yyyy HH:mm')}">01/01/2025 10:00</td>
             <td>
-              <span class="badge" 
-                    th:classappend="${t.tipo.name() == 'TRANSFERENCIA'} ? 'badge-primary' : ''"
-                    th:classappend="${t.tipo.name() == 'ADICAO'} ? 'badge-success' : ''"
-                    th:classappend="${t.tipo.name() == 'REMOCAO'} ? 'badge-error' : ''"
-                    th:text="${t.tipo.getDescricao()}">
+      <span class="badge" 
+        th:classappend="(${t.tipo.name() == 'TRANSFERENCIA'}) ? ' badge-primary' : (( ${t.tipo.name() == 'ADICAO'}) ? ' badge-success' : (( ${t.tipo.name() == 'REMOCAO'}) ? ' badge-error' : ''))"
+        th:text="${t.tipo.getDescricao()}">
                 Transferência
               </span>
             </td>

@@ -12,28 +12,22 @@
       </div>
 
       <div class="header-right">
-  <!-- Use action="" to submit to current URL and avoid evaluating request object at template-parse time -->
-  <form action="" method="get" class="search-form">
-          <div class="search" data-action="search">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="search-icon">
-              <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <input id="search-input" name="q" th:value="${q}" placeholder="Buscar por nome ou email..."/>
-            <button type="button" class="clear-btn" style="display:none;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </button>
-          </div>
-        </form>
-
         <nav class="nav-links">
           <a th:href="@{/}">Home</a>
-          <a th:href="@{/alunos}">Alunos</a>
-          <a th:href="@{/empresas}">Empresas</a>
+          <a th:if="${!isAluno}" th:href="@{/alunos}">Alunos</a>
+          <!-- Esconder links de Professores/Empresas para alunos -->
+          <!-- Não mostrar links para professores; apenas para usuários que não são alunos nem professores -->
+          <a th:if="${!isAluno and !isProfessor}" th:href="@{/professores}">Professores</a>
+          <a th:if="${!isAluno and !isProfessor}" th:href="@{/empresas}">Empresas</a>
           <a th:href="@{/moedas}">Moedas</a>
+          <!-- Extrato removido (redundante com 'Moedas') -->
         </nav>
+
+        <div class="auth-actions">
+          <form th:if="${isAuthenticated}" th:action="@{/logout}" method="post" style="display:inline;">
+            <button type="submit" class="btn btn-logout">Sair</button>
+          </form>
+        </div>
       </div>
     </header>
   </div>

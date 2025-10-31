@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Professores</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+  <div th:replace="fragments/header :: header"></div>
+
+  <div class="container">
+    <div class="breadcrumbs"><a th:href="@{/}">Home</a> <span>/</span> <a th:href="@{/professores}">Professores</a></div>
+
+    <div class="page-header">
+      <h2 style="margin:0; font-size:28px; color: var(--gray-900);">Professores</h2>
+      <a href="/professores/novo" class="btn btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Novo Professor
+      </a>
+    </div>
+
+    <section class="card">
+      <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Disciplina</th>
+        <th>Instituição</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="prof : ${professores}">
+        <td th:text="${prof.id}">1</td>
+        <td th:text="${prof.nome}">Nome</td>
+        <td th:text="${prof.email}">email</td>
+        <td th:text="${prof.disciplina}">disciplina</td>
+        <td th:text="${prof.instituicao != null ? prof.instituicao.nome : ''}">inst</td>
+        <td class="td-actions">
+          <a class="action-link view" th:href="@{|/professores/ver/${prof.id}|}" title="Ver">Ver</a>
+          <a class="action-link edit" th:href="@{|/professores/editar/${prof.id}|}" title="Editar">Editar</a>
+          <a class="action-link delete confirm-delete" th:href="@{|/professores/deletar/${prof.id}|}" title="Excluir">Excluir</a>
+        </td>
+      </tr>
+    </tbody>
+      </table>
+    </section>
+
+    <div th:replace="fragments/footer :: footer"></div>
+  </div>
+  <script src="/js/main.js"></script>
+</body>
+</html>

@@ -14,18 +14,7 @@
     <div class="page-header">
       <h2 style="margin:0; font-size:28px; color: var(--gray-900);">Detalhes do Aluno</h2>
       <div style="display:flex; gap: var(--spacing-sm);">
-        <a th:href="@{'/moedas/adicionar/' + ${aluno.id}}" class="btn btn-success">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          Adicionar Moedas
-        </a>
-        <a th:href="@{'/moedas/remover/' + ${aluno.id}}" class="btn" style="background: var(--error); color: white;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          Remover Moedas
-        </a>
+        <!-- Botões de adicionar/remover moedas removidos: operações não permitidas -->
         <a th:href="@{/alunos}" class="btn btn-secondary">Voltar</a>
       </div>
     </div>
@@ -81,6 +70,37 @@
           <div class="small muted" style="margin-bottom: var(--spacing-xs);">Instituição</div>
           <div style="font-weight: 600; color: var(--gray-900);" th:text="${aluno.instituicao != null ? aluno.instituicao.nome : 'Não informada'}">Não informada</div>
         </div>
+      </div>
+    </section>
+
+    <section class="card" th:if="${transacoes != null}">
+      <h3 style="margin-bottom: var(--spacing-md);">Histórico de Transações</h3>
+      <div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Data / Hora</th>
+              <th>Tipo</th>
+              <th>Origem</th>
+              <th>Destino</th>
+              <th>Quantidade</th>
+              <th>Descrição</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="t : ${transacoes}">
+              <td th:text="${#dates.format(t.dataHora, 'dd/MM/yyyy HH:mm')}"></td>
+              <td th:text="${t.tipo.descricao}"></td>
+              <td th:text="${t.alunoOrigem != null ? t.alunoOrigem.nome : '-'}"></td>
+              <td th:text="${t.alunoDestino != null ? t.alunoDestino.nome : '-'}"></td>
+              <td th:text="${t.quantidadeMoedas}"></td>
+              <td th:text="${t.descricao}"></td>
+            </tr>
+            <tr th:if="${transacoes.size() == 0}">
+              <td colspan="6" class="muted">Nenhuma transação encontrada.</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 

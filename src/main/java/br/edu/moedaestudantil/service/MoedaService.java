@@ -1,6 +1,7 @@
 package br.edu.moedaestudantil.service;
 
 import br.edu.moedaestudantil.model.Aluno;
+import br.edu.moedaestudantil.model.Professor;
 import br.edu.moedaestudantil.model.Transacao;
 import br.edu.moedaestudantil.repository.AlunoRepository;
 import br.edu.moedaestudantil.repository.TransacaoRepository;
@@ -14,36 +15,39 @@ public class MoedaService {
     
     private final AlunoRepository alunoRepository;
     private final TransacaoRepository transacaoRepository;
-    
-    public MoedaService(AlunoRepository alunoRepository, TransacaoRepository transacaoRepository) {
+    private final br.edu.moedaestudantil.repository.ProfessorRepository professorRepository;
+
+    public MoedaService(AlunoRepository alunoRepository, TransacaoRepository transacaoRepository, br.edu.moedaestudantil.repository.ProfessorRepository professorRepository) {
         this.alunoRepository = alunoRepository;
         this.transacaoRepository = transacaoRepository;
+        this.professorRepository = professorRepository;
     }
     
     @Transactional
     public void transferirMoedas(Long alunoOrigemId, Long alunoDestinoId, Integer quantidade, String descricao) {
+        // Método mantido para compatibilidade (transferência aluno->aluno).
         Aluno alunoOrigem = alunoRepository.findById(alunoOrigemId)
             .orElseThrow(() -> new RuntimeException("Aluno origem não encontrado"));
-        
+
         Aluno alunoDestino = alunoRepository.findById(alunoDestinoId)
             .orElseThrow(() -> new RuntimeException("Aluno destino não encontrado"));
-        
+
         if (alunoOrigem.getSaldoMoedas() < quantidade) {
             throw new RuntimeException("Saldo insuficiente. Saldo atual: " + alunoOrigem.getSaldoMoedas());
         }
-        
+
         if (quantidade <= 0) {
             throw new RuntimeException("Quantidade deve ser maior que zero");
         }
-        
+
         // Deduz do aluno origem
         alunoOrigem.setSaldoMoedas(alunoOrigem.getSaldoMoedas() - quantidade);
         alunoRepository.save(alunoOrigem);
-        
+
         // Adiciona ao aluno destino
         alunoDestino.setSaldoMoedas(alunoDestino.getSaldoMoedas() + quantidade);
         alunoRepository.save(alunoDestino);
-        
+
         // Registra transação
         Transacao transacao = new Transacao();
         transacao.setAlunoOrigem(alunoOrigem);
@@ -53,32 +57,52 @@ public class MoedaService {
         transacao.setDescricao(descricao != null ? descricao : "Transferência entre alunos");
         transacao.setDataHora(LocalDateTime.now());
         transacao.setInstituicao(alunoOrigem.getInstituicao());
-        
+
+        transacaoRepository.save(transacao);
+    }
+
+    @Transactional
+    public void transferirDeProfessorParaAluno(Long professorId, Long alunoDestinoId, Integer quantidade, String descricao) {
+        Professor professor = professorRepository.findById(professorId)
+            .orElseThrow(() -> new RuntimeException("Professor não encontrado"));
+
+        Aluno alunoDestino = alunoRepository.findById(alunoDestinoId)
+            .orElseThrow(() -> new RuntimeException("Aluno destino não encontrado"));
+
+        if (professor.getSaldoMoedas() == null || professor.getSaldoMoedas() < quantidade) {
+            throw new RuntimeException("Saldo insuficiente do professor. Saldo atual: " + (professor.getSaldoMoedas() == null ? 0 : professor.getSaldoMoedas()));
+        }
+
+        if (quantidade <= 0) {
+            throw new RuntimeException("Quantidade deve ser maior que zero");
+        }
+
+        // Deduz do professor
+        professor.setSaldoMoedas(professor.getSaldoMoedas() - quantidade);
+        professorRepository.save(professor);
+
+        // Adiciona ao aluno destino
+        alunoDestino.setSaldoMoedas(alunoDestino.getSaldoMoedas() + quantidade);
+        alunoRepository.save(alunoDestino);
+
+        // Registra transação (alunoOrigem fica null, descrição aponta para professor)
+        Transacao transacao = new Transacao();
+        transacao.setAlunoOrigem(null);
+        transacao.setAlunoDestino(alunoDestino);
+        transacao.setQuantidadeMoedas(quantidade);
+    // Marca transação como transferência feita por professor
+    transacao.setTipo(Transacao.TipoTransacao.PROFESSOR_PARA_ALUNO);
+    transacao.setDescricao(descricao != null ? descricao : "Transferência do professor: " + professor.getNome());
+        transacao.setDataHora(LocalDateTime.now());
+        transacao.setInstituicao(professor.getInstituicao());
+
         transacaoRepository.save(transacao);
     }
     
     @Transactional
     public void adicionarMoedas(Long alunoId, Integer quantidade, String descricao) {
-        Aluno aluno = alunoRepository.findById(alunoId)
-            .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
-        
-        if (quantidade <= 0) {
-            throw new RuntimeException("Quantidade deve ser maior que zero");
-        }
-        
-        aluno.setSaldoMoedas(aluno.getSaldoMoedas() + quantidade);
-        alunoRepository.save(aluno);
-        
-        // Registra transação
-        Transacao transacao = new Transacao();
-        transacao.setAlunoDestino(aluno);
-        transacao.setQuantidadeMoedas(quantidade);
-        transacao.setTipo(Transacao.TipoTransacao.ADICAO);
-        transacao.setDescricao(descricao != null ? descricao : "Adição manual de moedas");
-        transacao.setDataHora(LocalDateTime.now());
-        transacao.setInstituicao(aluno.getInstituicao());
-        
-        transacaoRepository.save(transacao);
+        // Função de adicionar moedas foi removida do sistema — não implementada.
+        throw new UnsupportedOperationException("Adicionar moedas não é permitido neste sistema.");
     }
     
     @Transactional

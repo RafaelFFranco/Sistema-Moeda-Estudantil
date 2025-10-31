@@ -38,6 +38,7 @@ public class Transacao {
     
     public enum TipoTransacao {
         TRANSFERENCIA("Transferência entre alunos"),
+        PROFESSOR_PARA_ALUNO("Transferência do professor para aluno"),
         ADICAO("Adição manual"),
         REMOCAO("Remoção manual"),
         RESGATE("Resgate em empresa");

@@ -3,6 +3,7 @@ package br.edu.moedaestudantil.controller;
 import br.edu.moedaestudantil.model.EmpresaParceira;
 import br.edu.moedaestudantil.service.EmpresaService;
 import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/empresas")
+@PreAuthorize("!hasRole('ALUNO')")
 public class EmpresaController {
 
     private final EmpresaService empresaService;

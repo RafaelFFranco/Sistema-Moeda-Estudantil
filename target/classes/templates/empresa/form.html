@@ -12,6 +12,10 @@
     <div class="breadcrumbs"><a th:href="@{/}">Home</a> <span>/</span> <a th:href="@{/empresas}">Empresas</a> <span>/</span> <span th:text="${empresa.id != null ? 'Editar' : 'Nova'}">Nova</span></div>
 
     <section class="card">
+      <div class="signup-chooser" style="display:flex;gap:8px;margin-bottom:14px;">
+        <a class="btn btn-ghost" th:href="@{/alunos/novo}" style="padding:8px 14px;">Criar como Aluno</a>
+        <a class="btn btn-primary" th:href="@{/empresas/nova}" style="padding:8px 14px;">Criar como Empresa</a>
+      </div>
       <form th:action="@{/empresas/salvar}" th:object="${empresa}" method="post">
         <input type="hidden" th:field="*{id}">
         <div class="form-grid">

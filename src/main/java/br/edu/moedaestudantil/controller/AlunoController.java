@@ -48,6 +48,7 @@ public class AlunoController {
     @PreAuthorize("!hasRole('ALUNO')")
     public String save(@Valid @ModelAttribute("aluno") Aluno aluno, 
                       @RequestParam("instituicaoId") Long instituicaoId,
+                      @RequestParam(value = "senha", required = false) String senha,
                       BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("instituicoes", instituicaoRepository.findAll());
@@ -59,6 +60,12 @@ public class AlunoController {
             Instituicao instituicao = instituicaoRepository.findById(instituicaoId)
                 .orElseThrow(() -> new IllegalArgumentException("Instituição inválida"));
             aluno.setInstituicao(instituicao);
+        }
+        
+        // Se estiver editando e a senha não foi informada, não passar senha para o service
+        // (o service vai manter a senha antiga)
+        if (aluno.getId() != null && (senha == null || senha.isEmpty())) {
+            aluno.setSenha(null);
         }
         
         alunoService.save(aluno);

@@ -16,11 +16,13 @@ public class MoedaService {
     private final AlunoRepository alunoRepository;
     private final TransacaoRepository transacaoRepository;
     private final br.edu.moedaestudantil.repository.ProfessorRepository professorRepository;
+    private final EmailService emailService;
 
-    public MoedaService(AlunoRepository alunoRepository, TransacaoRepository transacaoRepository, br.edu.moedaestudantil.repository.ProfessorRepository professorRepository) {
+    public MoedaService(AlunoRepository alunoRepository, TransacaoRepository transacaoRepository, br.edu.moedaestudantil.repository.ProfessorRepository professorRepository, EmailService emailService) {
         this.alunoRepository = alunoRepository;
         this.transacaoRepository = transacaoRepository;
         this.professorRepository = professorRepository;
+        this.emailService = emailService;
     }
     
     @Transactional
@@ -90,13 +92,19 @@ public class MoedaService {
         transacao.setAlunoOrigem(null);
         transacao.setAlunoDestino(alunoDestino);
         transacao.setQuantidadeMoedas(quantidade);
-    // Marca transação como transferência feita por professor
-    transacao.setTipo(Transacao.TipoTransacao.PROFESSOR_PARA_ALUNO);
-    transacao.setDescricao(descricao != null ? descricao : "Transferência do professor: " + professor.getNome());
+        // Marca transação como transferência feita por professor
+        transacao.setTipo(Transacao.TipoTransacao.PROFESSOR_PARA_ALUNO);
+        transacao.setDescricao(descricao != null ? descricao : "Transferência do professor: " + professor.getNome());
         transacao.setDataHora(LocalDateTime.now());
         transacao.setInstituicao(professor.getInstituicao());
 
+
         transacaoRepository.save(transacao);
+
+        String mensagem_aluno = "Olá, " + alunoDestino.getNome() + "! Você acaba de receber " + transacao.getQuantidadeMoedas() + " moedas do professor " + professor.getNome();
+        String mensagem_professor = "Olá, " + professor.getNome() + "! Você enviou " + transacao.getQuantidadeMoedas() + " moedas para " + alunoDestino.getNome();
+        emailService.sendEmail(professor.getEmail(), mensagem_professor);
+        emailService.sendEmail(alunoDestino.getEmail(), mensagem_aluno);
     }
     
     @Transactional

@@ -57,4 +57,8 @@ public class EmpresaService {
     public void deleteById(Long id) { 
         empresaRepository.deleteById(id); 
     }
+
+    public long count() {
+        return empresaRepository.count();
+    }
 }

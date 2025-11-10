@@ -1,21 +1,23 @@
 package br.edu.moedaestudantil.model;
 
 import jakarta.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class Vantagem {
+public class Vantagem implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nome;
-
-    @Column(length = 1000)
     private String descricao;
 
-    // custo em moedas necessárias para resgatar
-    private Integer custoMoedas;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private EmpresaParceira empresaParceira;
+
+    @Column(name = "custo_moedas", nullable = false)
+    private Integer custoMoedas = 0;
 
     public Long getId() {
         return id;
@@ -25,27 +27,34 @@ public class Vantagem {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    // Compatibilidade com templates que usam "titulo"
+    public String getTitulo() {
+        return this.nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setTitulo(String titulo) {
+        this.nome = titulo;
     }
 
-    public String getDescricao() {
-        return descricao;
+    // Compatibilidade com templates que usam "valor"
+    public Integer getValor() {
+        return this.custoMoedas;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setValor(Integer valor) {
+        this.custoMoedas = valor == null ? 0 : valor;
     }
 
-    public Integer getCustoMoedas() {
-        return custoMoedas;
-    }
+    // Mantém acesso padrão também
+    public String getNome() { return this.nome; }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public void setCustoMoedas(Integer custoMoedas) {
-        this.custoMoedas = custoMoedas;
-    }
+    public String getDescricao() { return this.descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
+
+    public Integer getCustoMoedas() { return custoMoedas; }
+    public void setCustoMoedas(Integer custoMoedas) { this.custoMoedas = custoMoedas == null ? 0 : custoMoedas; }
+
+    public EmpresaParceira getEmpresaParceira() { return empresaParceira; }
+    public void setEmpresaParceira(EmpresaParceira empresaParceira) { this.empresaParceira = empresaParceira; }
 }

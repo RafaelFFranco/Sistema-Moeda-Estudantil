@@ -12,5 +12,8 @@
   <p>Email: <span th:text="${empresa.email}"></span></p>
   <p>Login: <span th:text="${empresa.login}"></span></p>
   <a th:href="@{/empresas}">Voltar</a>
+  <p>
+    <a th:href="@{/empresa/{id}/vantagem/new(id=${empresa.id})}" class="btn">Adicionar Vantagem</a>
+  </p>
 </body>
 </html>

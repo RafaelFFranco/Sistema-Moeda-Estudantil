@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Vantagens Disponíveis</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+  <div th:replace="fragments/header :: header"></div>
+
+  <div class="container">
+    <div class="breadcrumbs">
+      <a th:href="@{/}">Home</a> <span>/</span> <span>Vantagens Disponíveis</span>
+    </div>
+
+    <main class="card">
+      <h2>Vantagens Disponíveis</h2>
+      <p class="small muted">Escolha uma vantagem para resgatar usando suas moedas estudantis.</p>
+      <p style="margin-top: var(--spacing-sm);">
+        <strong>Seu saldo atual: </strong>
+        <span style="color: var(--royal-blue); font-size: 1.1rem;" th:text="${aluno.saldoMoedas} ?: 0">0</span>
+        <span class="small muted"> moedas</span>
+      </p>
+
+      <!-- Mensagens de feedback -->
+      <div th:if="${mensagem}" 
+           th:classappend="${tipoMensagem == 'success' ? 'alert alert-success' : 'alert alert-error'}" 
+           style="margin-top: var(--spacing-md); margin-bottom: var(--spacing-md); padding: var(--spacing-md); border-radius: var(--radius-sm);"
+           th:text="${mensagem}">
+      </div>
+
+      <div th:if="${vantagens == null || vantagens.isEmpty()}">
+        <p class="small muted" style="margin-top: var(--spacing-lg);">
+          Nenhuma vantagem disponível no momento.
+        </p>
+      </div>
+
+      <section th:if="${vantagens != null && !vantagens.isEmpty()}" style="margin-top: var(--spacing-lg);">
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--spacing-lg);">
+          <div th:each="v : ${vantagens}" 
+               style="border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: var(--spacing-lg); background: white;">
+            <h3 style="margin: 0 0 var(--spacing-sm) 0; font-size: 1.25rem; color: var(--gray-900);" 
+                th:text="${v.nome}">Nome da Vantagem</h3>
+            
+            <p class="small" style="color: var(--gray-600); margin-bottom: var(--spacing-md); min-height: 60px;" 
+               th:text="${v.descricao}">Descrição da vantagem</p>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: var(--spacing-md); padding-top: var(--spacing-md); border-top: 1px solid var(--gray-200);">
+              <div>
+                <span class="small muted">Custo: </span>
+                <strong style="color: var(--royal-blue); font-size: 1.1rem;" 
+                        th:text="${v.custoMoedas} + ' moedas'">0 moedas</strong>
+              </div>
+              <div th:if="${aluno.saldoMoedas != null && aluno.saldoMoedas >= v.custoMoedas}">
+                <form th:action="@{/moedas/trocar}" method="post" style="display: inline;">
+                  <input type="hidden" name="vantagemId" th:value="${v.id}" />
+                  <button type="submit" class="btn btn-primary" 
+                          style="padding: var(--spacing-xs) var(--spacing-md);">
+                    Resgatar
+                  </button>
+                </form>
+              </div>
+              <div th:if="${aluno.saldoMoedas == null || aluno.saldoMoedas < v.custoMoedas}">
+                <button type="button" class="btn" disabled
+                        style="padding: var(--spacing-xs) var(--spacing-md); opacity: 0.5; cursor: not-allowed;">
+                  Resgatar
+                </button>
+                <div class="small muted" style="margin-top: var(--spacing-xs); color: var(--red-600);">
+                  Saldo insuficiente
+                </div>
+              </div>
+            </div>
+            
+            <div th:if="${v.empresa != null}" style="margin-top: var(--spacing-sm);">
+              <span class="small muted">Empresa: </span>
+              <span class="small" th:text="${v.empresa.nome}">Empresa</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div th:replace="fragments/footer :: footer"></div>
+  <script src="/js/main.js"></script>
+</body>
+</html>
+

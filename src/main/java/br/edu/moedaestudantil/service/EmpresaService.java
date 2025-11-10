@@ -30,6 +30,10 @@ public class EmpresaService {
         return empresaRepository.findById(id); 
     }
 
+    public Optional<EmpresaParceira> findByLogin(String login) {
+        return empresaRepository.findByLogin(login);
+    }
+
     public EmpresaParceira save(EmpresaParceira empresa) {
         // Gerenciar senha
         if (empresa.getId() != null) {

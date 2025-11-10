@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title th:text="${vantagem.id != null ? 'Editar Vantagem' : 'Nova Vantagem'}">Nova Vantagem</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+  <div th:replace="fragments/header :: header"></div>
+
+  <div class="container">
+    <div class="breadcrumbs">
+      <a th:href="@{/}">Home</a> <span>/</span> 
+      <a th:href="@{/vantagens/minhas}">Minhas Vantagens</a> <span>/</span> 
+      <span th:text="${vantagem.id != null ? 'Editar' : 'Nova'}">Nova</span>
+    </div>
+
+    <section class="card">
+      <h2 th:text="${vantagem.id != null ? 'Editar Vantagem' : 'Nova Vantagem'}">Nova Vantagem</h2>
+      
+      <form th:action="@{/vantagens/salvar}" th:object="${vantagem}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{empresa.id}">
+        
+        <div class="form-grid">
+          <div>
+            <label>Nome da Vantagem <span style="color: red;">*</span></label>
+            <input type="text" th:field="*{nome}" required 
+                   placeholder="Ex: Desconto de 10% em livros"/>
+            <div th:if="${#fields.hasErrors('nome')}" class="error-message" 
+                 th:errors="*{nome}">Erro no nome</div>
+          </div>
+          
+          <div>
+            <label>Custo em Moedas <span style="color: red;">*</span></label>
+            <input type="number" th:field="*{custoMoedas}" required min="1" 
+                   placeholder="Ex: 50"/>
+            <div th:if="${#fields.hasErrors('custoMoedas')}" class="error-message" 
+                 th:errors="*{custoMoedas}">Erro no custo</div>
+          </div>
+        </div>
+
+        <div style="margin-top: var(--spacing-md);">
+          <label>Descrição <span style="color: red;">*</span></label>
+          <textarea th:field="*{descricao}" required rows="4" 
+                    placeholder="Descreva a vantagem oferecida..."
+                    style="width: 100%; padding: var(--spacing-sm); border: 1px solid var(--gray-300); border-radius: var(--radius-sm); font-family: inherit;"></textarea>
+          <div th:if="${#fields.hasErrors('descricao')}" class="error-message" 
+               th:errors="*{descricao}">Erro na descrição</div>
+        </div>
+
+        <div class="form-actions" style="margin-top: var(--spacing-lg);">
+          <button class="btn btn-primary" type="submit">
+            <span th:text="${vantagem.id != null ? 'Atualizar' : 'Cadastrar'}">Cadastrar</span>
+          </button>
+          <a class="btn btn-secondary" th:href="@{/vantagens/minhas}">Cancelar</a>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <div th:replace="fragments/footer :: footer"></div>
+  <script src="/js/main.js"></script>
+</body>
+</html>
+

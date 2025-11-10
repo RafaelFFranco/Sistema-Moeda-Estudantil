@@ -1,10 +1,12 @@
 package br.edu.moedaestudantil.service;
 
 import br.edu.moedaestudantil.model.Vantagem;
+import br.edu.moedaestudantil.model.EmpresaParceira;
 import br.edu.moedaestudantil.repository.VantagemRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VantagemService {
@@ -15,14 +17,22 @@ public class VantagemService {
     }
 
     public List<Vantagem> findAll() {
-        return vantagemRepository.findAll();
+        return vantagemRepository.findAllByOrderByNomeAsc();
     }
 
-    public Vantagem findById(Long id) {
-        return vantagemRepository.findById(id).orElse(null);
+    public List<Vantagem> findByEmpresa(EmpresaParceira empresa) {
+        return vantagemRepository.findByEmpresa(empresa);
     }
 
-    public Vantagem save(Vantagem v) { return vantagemRepository.save(v); }
+    public Optional<Vantagem> findById(Long id) {
+        return vantagemRepository.findById(id);
+    }
 
-    public void deleteById(Long id) { vantagemRepository.deleteById(id); }
+    public Vantagem save(Vantagem v) { 
+        return vantagemRepository.save(v); 
+    }
+
+    public void deleteById(Long id) { 
+        vantagemRepository.deleteById(id); 
+    }
 }

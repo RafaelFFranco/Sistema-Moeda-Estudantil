@@ -48,7 +48,8 @@ public class MoedaController {
         Aluno aluno = alunoService.findByLogin(username).orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
         model.addAttribute("aluno", aluno);
         model.addAttribute("vantagens", vantagemService.findAll());
-        return "moeda/trocar";
+        // Redireciona para a página de listagem de vantagens
+        return "redirect:/vantagens/listar";
     }
 
     @PostMapping("/trocar")
@@ -58,19 +59,19 @@ public class MoedaController {
             String username = auth.getName();
             Aluno aluno = alunoService.findByLogin(username).orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
 
-            Vantagem v = vantagemService.findById(vantagemId);
-            if (v == null) throw new RuntimeException("Vantagem não encontrada");
+            Vantagem v = vantagemService.findById(vantagemId)
+                .orElseThrow(() -> new RuntimeException("Vantagem não encontrada"));
 
             Integer custo = v.getCustoMoedas() != null ? v.getCustoMoedas() : 0;
             moedaService.removerMoedas(aluno.getId(), custo, "Resgate: " + v.getNome());
 
             redirectAttributes.addFlashAttribute("mensagem", "Resgate realizado: " + v.getNome());
             redirectAttributes.addFlashAttribute("tipoMensagem", "success");
-            return "redirect:/alunos/ver/" + aluno.getId();
+            return "redirect:/vantagens/listar";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("mensagem", "Erro: " + e.getMessage());
             redirectAttributes.addFlashAttribute("tipoMensagem", "error");
-            return "redirect:/moedas/trocar";
+            return "redirect:/vantagens/listar";
         }
     }
     

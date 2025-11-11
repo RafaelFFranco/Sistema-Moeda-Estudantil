@@ -13,6 +13,9 @@ public class Vantagem implements Serializable {
     private String nome;
     private String descricao;
 
+    @Column(name = "imagem_url", length = 1024)
+    private String imageUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private EmpresaParceira empresaParceira;
 
@@ -57,4 +60,7 @@ public class Vantagem implements Serializable {
 
     public EmpresaParceira getEmpresaParceira() { return empresaParceira; }
     public void setEmpresaParceira(EmpresaParceira empresaParceira) { this.empresaParceira = empresaParceira; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }

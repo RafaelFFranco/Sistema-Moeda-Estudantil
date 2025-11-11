@@ -14,6 +14,10 @@
         <div th:if="${vantagens != null}">
             <ul>
                 <li th:each="v : ${vantagens}">
+                    <div th:if="${v.imageUrl != null and #strings.isNotEmpty(v.imageUrl)}" style="margin-bottom:8px;">
+                        <img th:src="@{${v.imageUrl}}" alt="Imagem da vantagem" style="max-width:200px; height:auto; display:block;" />
+                        <div class="small muted" style="word-break:break-all;" th:text="${v.imageUrl}"></div>
+                    </div>
                     <span th:text="${v.nome}">Nome da vantagem</span>
                     <span th:text="${v.descricao}">Descrição</span>
                     <span th:text="${v.custoMoedas}">0</span>

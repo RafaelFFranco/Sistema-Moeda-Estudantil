@@ -14,7 +14,6 @@
         <form th:if="${empresaId != null}"
             th:action="@{/empresa/{id}/vantagem(id=${empresaId})}"
             th:object="${vantagem}" method="post">
-            <input type="hidden" th:field="*{empresaParceira.id}" th:value="${empresaId}" />
             <!-- campos da vantagem -->
             <div>
                 <label>Nome</label>
@@ -23,6 +22,10 @@
             <div>
                 <label>Descrição</label>
                 <textarea th:field="*{descricao}"></textarea>
+            </div>
+            <div>
+                <label>URL da Imagem</label>
+                <input type="url" th:field="*{imageUrl}" placeholder="https://..." />
             </div>
             <!-- Campo de custo (número de moedas a descontar da carteira do aluno) -->
             <div class="form-group">
@@ -50,6 +53,10 @@
             <div>
                 <label>Descrição</label>
                 <textarea th:field="*{descricao}"></textarea>
+            </div>
+            <div>
+                <label>URL da Imagem</label>
+                <input type="url" th:field="*{imageUrl}" placeholder="https://..." />
             </div>
             <!-- Campo de custo (número de moedas a descontar da carteira do aluno) -->
             <div class="form-group">

@@ -319,6 +319,29 @@ table tbody tr:hover {
     box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.1);
 }
 
+/* Vantagem thumbnail in tables */
+.vantagem-thumb {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    box-shadow: var(--shadow-sm);
+}
+
+.thumb-placeholder {
+    width: 80px;
+    height: 80px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gray-100);
+    color: var(--gray-600);
+    font-size: 12px;
+    border-radius: 8px;
+    border: 1px dashed var(--gray-200);
+}
+
 .muted { 
     color: var(--muted); 
 }
@@ -401,6 +424,13 @@ table tbody tr:hover {
     background: transparent; 
     color: var(--royal-blue); 
     padding: var(--spacing-sm) var(--spacing-md);
+}
+
+/* Save button helper */
+.btn-save {
+    min-width: 120px;
+    justify-content: center;
+    padding: var(--spacing-sm) var(--spacing-xl);
 }
 
 .btn-ghost:hover {

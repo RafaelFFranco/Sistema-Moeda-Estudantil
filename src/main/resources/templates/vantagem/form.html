@@ -33,7 +33,9 @@
                 <input type="number" id="custoMoedas" min="0" step="1"
                        th:field="*{custoMoedas}" class="form-control" />
             </div>
-            <button type="submit">Salvar</button>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-save">Salvar</button>
+            </div>
         </form>
 
         <form th:if="${empresaId == null}"
@@ -64,7 +66,9 @@
                 <input type="number" id="custoMoedas" min="0" step="1"
                        th:field="*{custoMoedas}" class="form-control" />
             </div>
-            <button type="submit">Salvar</button>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-save">Salvar</button>
+            </div>
         </form>
     </div>
 

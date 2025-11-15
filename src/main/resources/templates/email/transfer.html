@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Você recebeu moedas!</title>
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 6px; }
+        .header { background:#2d6cdf; color: white; padding: 12px; border-radius: 4px; }
+        .content { padding: 16px; }
+        .footer { font-size: 12px; color: #777; padding-top: 12px; }
+        .amount { font-size: 20px; font-weight: bold; color: #2d6cdf; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h2>Nova transferência de moedas</h2>
+    </div>
+    <div class="content">
+        <p>Olá <span th:text="${nomeAluno}">Aluno</span>,</p>
+
+        <p>Você recebeu <span class="amount" th:text="${quantidade}">0</span> moedas do professor <strong th:text="${nomeProfessor}">Professor</strong>.</p>
+
+        <p th:if="${descricao}">Mensagem: <em th:text="${descricao}"></em></p>
+
+        <p>Data/hora: <span th:text="${dataHora}">--/--/----</span></p>
+
+        <p>Seu saldo atual: <strong th:text="${saldoAtual}">0</strong></p>
+
+        <hr/>
+        <p class="footer">Esta é uma notificação automática do sistema Moeda Estudantil.</p>
+    </div>
+</div>
+</body>
+</html>

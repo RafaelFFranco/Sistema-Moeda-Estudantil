@@ -142,6 +142,39 @@ body {
     border-left: 4px solid var(--error); 
 }
 
+/* Alerts (flash messages + cupom) */
+.alerts-wrapper { margin-top: -12px; }
+.alert { display: block; background: white; border-radius: var(--radius-lg); padding: 14px; box-shadow: var(--shadow); border-left: 4px solid transparent; margin-bottom: var(--spacing-md); }
+.alert-main { display: flex; align-items: stretch; }
+.alert-body { display:flex; justify-content: space-between; width:100%; gap: var(--spacing-md); align-items: center; }
+.alert-left { flex:1; }
+.alert-text { font-weight: 600; color: var(--gray-800); font-size: 14px; }
+.alert-meta { font-size: 12px; color: var(--gray-500); margin-top: 6px; }
+.alert-right { display:flex; align-items:center; }
+
+.alert-success { border-left-color: var(--success); }
+.alert-error { border-left-color: var(--error); }
+.alert-info { border-left-color: var(--royal-blue); }
+
+.cupom-card { display:flex; flex-direction: column; align-items:center; justify-content:center; gap:6px; padding:10px 14px; border-radius: 10px; background: linear-gradient(180deg, rgba(16,185,129,0.06), rgba(37,99,235,0.03)); min-width:140px; box-shadow: 0 6px 20px rgba(2,6,23,0.06); }
+.cupom-label { font-size:12px; color:var(--gray-600); font-weight:700; letter-spacing:0.6px; text-transform:uppercase; }
+.cupom-code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace; font-size:20px; font-weight:800; color:var(--gray-900); background: rgba(255,255,255,0.6); padding:6px 10px; border-radius:6px; letter-spacing:1px; }
+.cupom-copy { font-size:12px; padding:6px 10px; margin-top:4px; }
+
+/* Modal (server-rendered cupom) */
+.modal-backdrop { position: fixed; inset: 0; background: rgba(2,6,23,0.45); display: flex; align-items: center; justify-content: center; z-index: 5000; }
+.modal { background: white; padding: 22px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); max-width: 720px; width: calc(100% - 48px); }
+.modal h3 { margin: 0 0 8px 0; font-size: 20px; color: var(--gray-900); }
+.modal p { margin: 0 0 12px 0; color: var(--gray-700); }
+.fade-in { animation: fadeIn 0.18s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 700px) {
+    .alert-body { flex-direction: column; align-items: stretch; }
+    .alert-right { justify-content:flex-end; }
+    .cupom-card { width:100%; flex-direction:row; justify-content:space-between; padding:8px 12px; }
+}
+
 /* Empty state */
 .empty-state { 
     padding: var(--spacing-2xl); 

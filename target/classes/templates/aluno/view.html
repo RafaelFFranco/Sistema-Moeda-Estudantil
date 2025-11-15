@@ -15,7 +15,7 @@
       <h2 style="margin:0; font-size:28px; color: var(--gray-900);">Detalhes do Aluno</h2>
       <div style="display:flex; gap: var(--spacing-sm);">
         <!-- Botões de adicionar/remover moedas removidos: operações não permitidas -->
-        <a th:href="@{/alunos}" class="btn btn-secondary">Voltar</a>
+        <a th:href="${isAluno} ? @{/alunos/me} : @{/alunos}" class="btn btn-secondary">Voltar</a>
       </div>
     </div>
 
@@ -89,7 +89,7 @@
           </thead>
           <tbody>
             <tr th:each="t : ${transacoes}">
-              <td th:text="${#dates.format(t.dataHora, 'dd/MM/yyyy HH:mm')}"></td>
+              <td th:text="${#temporals.format(t.dataHora, 'dd/MM/yyyy HH:mm')}"></td>
               <td th:text="${t.tipo.descricao}"></td>
               <td th:text="${t.alunoOrigem != null ? t.alunoOrigem.nome : '-'}"></td>
               <td th:text="${t.alunoDestino != null ? t.alunoDestino.nome : '-'}"></td>

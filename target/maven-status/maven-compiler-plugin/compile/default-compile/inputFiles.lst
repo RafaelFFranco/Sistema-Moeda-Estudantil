@@ -4,9 +4,13 @@ C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moe
 C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\service\MoedaService.java
 C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\config\DataInitializer.java
 C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\controller\EmpresaController.java
+C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\config\MailConfig.java
 C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\service\CustomUserDetailsService.java
+C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\service\EmailService.java
 C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\repository\VantagemRepository.java
 C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\repository\TransacaoRepository.java
+C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\controller\VantagemController.java
+C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\config\MigratingPasswordEncoder.java
 C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\service\EmpresaService.java
 C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\service\VantagemService.java
 C:\Users\Enzo\Documents\GitHub\Sistema-Moeda-Estudantil\src\main\java\br\edu\moedaestudantil\controller\HomeController.java

@@ -12,6 +12,7 @@ br\edu\moedaestudantil\repository\EmpresaRepository.class
 br\edu\moedaestudantil\MoedaEstudantilApplication.class
 br\edu\moedaestudantil\service\ProfessorService.class
 br\edu\moedaestudantil\config\GlobalControllerAdvice.class
+br\edu\moedaestudantil\config\MigratingPasswordEncoder.class
 br\edu\moedaestudantil\service\EmpresaService.class
 br\edu\moedaestudantil\model\Aluno.class
 br\edu\moedaestudantil\repository\ProfessorRepository.class
@@ -22,13 +23,16 @@ br\edu\moedaestudantil\controller\LoginController.class
 br\edu\moedaestudantil\repository\InstituicaoRepository.class
 br\edu\moedaestudantil\service\AlunoService.class
 br\edu\moedaestudantil\model\Vantagem.class
+br\edu\moedaestudantil\controller\VantagemController.class
 br\edu\moedaestudantil\controller\EmpresaController.class
 br\edu\moedaestudantil\model\Transacao.class
+br\edu\moedaestudantil\service\EmailService.class
 br\edu\moedaestudantil\controller\AlunoController.class
 br\edu\moedaestudantil\repository\TransacaoRepository.class
 br\edu\moedaestudantil\service\VantagemService.class
 br\edu\moedaestudantil\controller\HomeController.class
 br\edu\moedaestudantil\dto\AlunoForm.class
+br\edu\moedaestudantil\config\MailConfig.class
 br\edu\moedaestudantil\config\SecurityConfig.class
 br\edu\moedaestudantil\model\Professor.class
 br\edu\moedaestudantil\service\ScheduledSemesterCredit.class

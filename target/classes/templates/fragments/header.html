@@ -2,6 +2,7 @@
 <!-- Header fragment -->
 <div th:fragment="header">
   <div class="container">
+    <div th:replace="fragments/alerts :: alerts"></div>
     <header class="site-header">
       <div class="brand">
   <div class="logo" style="background-image: url('/img/login-icon.png');"></div>

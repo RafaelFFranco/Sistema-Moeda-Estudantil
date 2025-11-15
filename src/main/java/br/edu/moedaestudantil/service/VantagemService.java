@@ -26,6 +26,15 @@ public class VantagemService {
         return vantagemRepository.findById(id);
     }
 
+    // retorna vantagem com empresaParceira carregada (quando necessário em controllers)
+    public Optional<Vantagem> findByIdWithEmpresaParceira(Long id) {
+        try {
+            return vantagemRepository.findByIdWithEmpresaParceira(id);
+        } catch (Exception e) {
+            return vantagemRepository.findById(id);
+        }
+    }
+
     public Vantagem save(Vantagem v) {
         return vantagemRepository.save(v);
     }

@@ -7,6 +7,7 @@ import br.edu.moedaestudantil.repository.TransacaoRepository;
 import br.edu.moedaestudantil.service.AlunoService;
 import br.edu.moedaestudantil.service.MoedaService;
 import br.edu.moedaestudantil.service.ProfessorService;
+import br.edu.moedaestudantil.service.EmailService;
 import br.edu.moedaestudantil.service.VantagemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,15 +33,17 @@ public class MoedaController {
     private final ProfessorService professorService;
     private final TransacaoRepository transacaoRepository;
     private final AlunoService alunoService;
+    private final EmailService emailService;
 
     // { changed code } adicione VantagemService ao construtor
     public MoedaController(MoedaService moedaService, VantagemService vantagemService, ProfessorService professorService,
-                          TransacaoRepository transacaoRepository, AlunoService alunoService) {
+                          TransacaoRepository transacaoRepository, AlunoService alunoService, EmailService emailService) {
         this.moedaService = moedaService;
         this.vantagemService = vantagemService;
         this.professorService = professorService;
         this.transacaoRepository = transacaoRepository;
         this.alunoService = alunoService;
+        this.emailService = emailService;
     }
 
     // Adiciona a lista de vantagens ao model para as views deste controller
@@ -51,8 +54,49 @@ public class MoedaController {
 
     @GetMapping
     public String index(Model model) {
-        
-        List<Transacao> transacoes = transacaoRepository.findAllByOrderByDataHoraDesc();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isProfessor = false;
+        boolean isAluno = false;
+        if (auth != null && auth.getAuthorities() != null) {
+            isProfessor = auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_PROFESSOR") || a.getAuthority().equals("PROFESSOR") );
+            isAluno = auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ALUNO") || a.getAuthority().equals("ALUNO") );
+        }
+
+        List<Transacao> transacoes = java.util.Collections.emptyList();
+
+        if (isAluno && auth != null) {
+            try {
+                String username = auth.getName();
+                Aluno aluno = alunoService.findByLogin(username).orElse(null);
+                if (aluno != null) {
+                    transacoes = transacaoRepository.findByAlunoOrigemIdOrAlunoDestinoIdOrderByDataHoraDesc(aluno.getId(), aluno.getId());
+                }
+            } catch (Exception e) {
+                transacoes = transacaoRepository.findAllByOrderByDataHoraDesc();
+            }
+        } else if (isProfessor && auth != null) {
+            try {
+                String username = auth.getName();
+                var professor = professorService.findByLogin(username).orElse(null);
+                if (professor != null && professor.getInstituicao() != null) {
+                    Long instId = professor.getInstituicao().getId();
+                    transacoes = transacaoRepository.findAllByOrderByDataHoraDesc();
+                    final Long fid = instId;
+                    transacoes = transacoes.stream()
+                            .filter(t -> t.getInstituicao() != null && fid.equals(t.getInstituicao().getId()))
+                            .filter(t -> t.getTipo() != Transacao.TipoTransacao.REMOCAO && t.getTipo() != Transacao.TipoTransacao.RESGATE)
+                            .toList();
+                } else {
+                    transacoes = transacaoRepository.findAllByOrderByDataHoraDesc();
+                }
+            } catch (Exception e) {
+                transacoes = transacaoRepository.findAllByOrderByDataHoraDesc();
+            }
+        } else {
+            transacoes = transacaoRepository.findAllByOrderByDataHoraDesc();
+        }
+
         model.addAttribute("transacoes", transacoes);
         return "moeda/index";
     }
@@ -78,6 +122,19 @@ public class MoedaController {
         model.addAttribute("isEmpresa", isEmpresa);
         model.addAttribute("isAluno", isAluno);
 
+        // Se o usuário autenticado for um aluno, carregue o objeto Aluno para que a view mostre o saldo
+        if (isAluno && auth != null) {
+            try {
+                String username = auth.getName();
+                br.edu.moedaestudantil.model.Aluno aluno = alunoService.findByLogin(username).orElse(null);
+                if (aluno != null) {
+                    model.addAttribute("aluno", aluno);
+                }
+            } catch (Exception e) {
+                // Não interrompe a renderização; caso de erro, view continuará exibindo 0
+            }
+        }
+
         return "moeda/trocar";
     }
 
@@ -88,14 +145,48 @@ public class MoedaController {
             String username = auth.getName();
             Aluno aluno = alunoService.findByLogin(username).orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
 
-            Vantagem v = vantagemService.findById(vantagemId).get();
-            if (v == null) throw new RuntimeException("Vantagem não encontrada");
+            Vantagem v = vantagemService.findByIdWithEmpresaParceira(vantagemId).orElseThrow(() -> new RuntimeException("Vantagem não encontrada"));
 
             Integer custo = v.getCustoMoedas() != null ? v.getCustoMoedas() : 0;
+            // efetua a dedução de saldo e grava transação
             moedaService.removerMoedas(aluno.getId(), custo, "Resgate: " + v.getNome());
 
+            // gerar código de cupom simples (6 caracteres alfanuméricos)
+            String codigoCupom = java.util.UUID.randomUUID().toString().replaceAll("[-]", "").substring(0, 8).toUpperCase();
+            java.time.LocalDate validade = java.time.LocalDate.now().plusDays(30);
+            java.time.format.DateTimeFormatter fmt = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            // montar mensagem de email no formato solicitado
+            String nomeAluno = aluno.getNome() != null ? aluno.getNome() : username;
+            String nomeVantagem = v.getNome() != null ? v.getNome() : "a vantagem";
+            String nomeEmpresa = "a empresa";
+            if (v.getEmpresaParceira() != null && v.getEmpresaParceira().getNome() != null) {
+                nomeEmpresa = v.getEmpresaParceira().getNome();
+            }
+
+            try {
+                emailService.sendCupomEmail(aluno.getEmail(), nomeAluno, nomeVantagem, nomeEmpresa, codigoCupom, validade.format(fmt));
+            } catch (Exception e) {
+                // não interrompe o fluxo principal
+            }
+
+            // Mensagem para UI e cupom como flash attribute
             redirectAttributes.addFlashAttribute("mensagem", "Resgate realizado: " + v.getNome());
             redirectAttributes.addFlashAttribute("tipoMensagem", "success");
+            redirectAttributes.addFlashAttribute("cupom", codigoCupom);
+            redirectAttributes.addFlashAttribute("cupomValidade", validade.format(fmt));
+
+            // Se o usuário autenticado for um aluno, redirecionamos para /alunos/me
+            boolean isAlunoRedirect = false;
+            if (auth != null && auth.getAuthorities() != null) {
+                isAlunoRedirect = auth.getAuthorities().stream()
+                        .anyMatch(a -> a.getAuthority().equals("ROLE_ALUNO") || a.getAuthority().equals("ALUNO") || a.getAuthority().equals("ROLE_STUDENT"));
+            }
+
+            if (isAlunoRedirect) {
+                return "redirect:/alunos/me";
+            }
+
             return "redirect:/alunos/ver/" + aluno.getId();
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("mensagem", "Erro: " + e.getMessage());

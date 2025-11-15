@@ -101,10 +101,39 @@ public class MoedaService {
 
         transacaoRepository.save(transacao);
 
-        String mensagem_aluno = "Olá, " + alunoDestino.getNome() + "! Você acaba de receber " + transacao.getQuantidadeMoedas() + " moedas do professor " + professor.getNome();
-        String mensagem_professor = "Olá, " + professor.getNome() + "! Você enviou " + transacao.getQuantidadeMoedas() + " moedas para " + alunoDestino.getNome();
-        emailService.sendEmail(professor.getEmail(), mensagem_professor);
-        emailService.sendEmail(alunoDestino.getEmail(), mensagem_aluno);
+        // Envia notificação HTML para o professor usando o template email/transfer-professor.html
+        try {
+            emailService.sendTransferEmailToProfessor(
+                    professor.getEmail(),
+                    professor.getNome(),
+                    alunoDestino.getNome(),
+                    transacao.getQuantidadeMoedas(),
+                    transacao.getDescricao(),
+                    transacao.getDataHora().toString(),
+                    professor.getSaldoMoedas()
+            );
+        } catch (Exception e) {
+            // fallback para texto simples caso o envio HTML falhe
+            String mensagem_professor = "Olá, " + professor.getNome() + "! Você enviou " + transacao.getQuantidadeMoedas() + " moedas para " + alunoDestino.getNome();
+            emailService.sendEmail(professor.getEmail(), mensagem_professor);
+        }
+
+        // Envia notificação HTML para o aluno usando o template email/transfer.html
+        try {
+            emailService.sendTransferEmail(
+                    alunoDestino.getEmail(),
+                    alunoDestino.getNome(),
+                    professor.getNome(),
+                    transacao.getQuantidadeMoedas(),
+                    transacao.getDescricao(),
+                    transacao.getDataHora().toString(),
+                    alunoDestino.getSaldoMoedas()
+            );
+        } catch (Exception e) {
+            // Em caso de falha no envio HTML, faz fallback para texto simples
+            String mensagem_aluno = "Olá, " + alunoDestino.getNome() + "! Você acaba de receber " + transacao.getQuantidadeMoedas() + " moedas do professor " + professor.getNome();
+            emailService.sendEmail(alunoDestino.getEmail(), mensagem_aluno);
+        }
     }
     
     @Transactional
@@ -129,15 +158,15 @@ public class MoedaService {
         aluno.setSaldoMoedas(aluno.getSaldoMoedas() - quantidade);
         alunoRepository.save(aluno);
         
-        // Registra transação
+        // Registra transação (resgate)
         Transacao transacao = new Transacao();
         transacao.setAlunoOrigem(aluno);
         transacao.setQuantidadeMoedas(quantidade);
-        transacao.setTipo(Transacao.TipoTransacao.REMOCAO);
-        transacao.setDescricao(descricao != null ? descricao : "Remoção manual de moedas");
+        transacao.setTipo(Transacao.TipoTransacao.RESGATE);
+        transacao.setDescricao(descricao != null ? descricao : "Resgate de moedas");
         transacao.setDataHora(LocalDateTime.now());
         transacao.setInstituicao(aluno.getInstituicao());
-        
+
         transacaoRepository.save(transacao);
     }
 }

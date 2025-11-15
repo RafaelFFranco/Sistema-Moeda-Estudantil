@@ -65,6 +65,24 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   });
 
+  // delegated handler: copy cupom from server-rendered modal
+  document.body.addEventListener('click', function(e){
+    var copyBtn = e.target.closest && e.target.closest('#btn-copy-modal');
+    if(!copyBtn) return;
+    var codeEl = document.querySelector('.cupom-code');
+    var text = codeEl ? codeEl.textContent.trim() : '';
+    if(!text) return;
+    if(navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){
+        showToast('Cupom copiado!', 'success');
+      }).catch(function(){
+        fallbackCopy(text);
+      });
+    } else {
+      fallbackCopy(text);
+    }
+  });
+
 });
 
 function showDeleteModal(onConfirm){
@@ -88,6 +106,29 @@ function showDeleteModal(onConfirm){
 function closeModal(){
   var b = document.querySelector('.modal-backdrop');
   if(b) b.remove();
+}
+
+// Fallback copy + small toast notification
+function fallbackCopy(text){
+  try{
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+    showToast('Cupom copiado!', 'success');
+  } catch(e){
+    showToast('Não foi possível copiar o cupom automaticamente. Selecione e copie manualmente.', 'error');
+  }
+}
+
+function showToast(message, type){
+  var t = document.createElement('div');
+  t.className = 'toast ' + (type === 'success' ? 'success' : (type === 'error' ? 'error' : ''));
+  t.textContent = message;
+  document.body.appendChild(t);
+  setTimeout(function(){ t.remove(); }, 2500);
 }
 
 function performSearch(q){

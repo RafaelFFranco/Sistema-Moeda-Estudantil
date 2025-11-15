@@ -1,0 +1,37 @@
+<!-- Alerts fragment (includes modal when a cupom is present) -->
+<div th:fragment="alerts">
+  <div th:if="${mensagem != null}" class="alerts-wrapper">
+    <div class="container">
+      <div th:class="'alert ' + (${tipoMensagem} == 'success' ? 'alert-success' : (${tipoMensagem} == 'error' ? 'alert-error' : 'alert-info'))">
+        <div class="alert-main">
+          <div class="alert-body">
+            <div class="alert-left">
+              <div class="alert-text" th:text="${mensagem}">Mensagem</div>
+              <div class="alert-meta" th:if="${cupomValidade != null}" th:text="'Válido até: ' + ${cupomValidade}"></div>
+            </div>
+            <!-- cupom will be shown in a modal instead of inline -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal rendered server-side when cupom exists; placed inside fragment so header include shows it -->
+  <div th:if="${cupom != null}" class="modal-backdrop fade-in">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-cupom">
+      <h3 id="modal-title-cupom">Resgate realizado</h3>
+      <p th:text="${mensagem}"></p>
+      <div style="display:flex; gap:16px; align-items:center; margin-top:8px;">
+        <div style="flex:1">
+          <div class="cupom-label">Cupom</div>
+          <div class="cupom-code" th:text="${cupom}" style="margin-top:8px; font-size:28px; font-weight:900;"></div>
+          <div class="alert-meta" th:if="${cupomValidade != null}" th:text="'Válido até: ' + ${cupomValidade}" style="margin-top:8px;"></div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px; align-items:flex-end;">
+          <button class="btn btn-primary" type="button" id="btn-copy-modal">Copiar</button>
+          <button class="btn btn-secondary btn-cancel" type="button">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

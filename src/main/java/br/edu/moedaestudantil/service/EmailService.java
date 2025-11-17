@@ -73,7 +73,8 @@ public class EmailService {
                               String nomeVantagem,
                               String nomeEmpresa,
                               String cupom,
-                              String cupomValidade) {
+                              String cupomValidade,
+                              String imagemUrl) {
         try {
             if (!mailEnabled) {
                 logger.info("Envio de email desabilitado (app.mail.enabled=false). Simulando envio HTML para: {}", to);
@@ -105,6 +106,8 @@ public class EmailService {
                 ctx.setVariable("nomeEmpresa", nomeEmpresa);
                 ctx.setVariable("cupom", cupom);
                 ctx.setVariable("cupomValidade", cupomValidade);
+                ctx.setVariable("imagemUrl", imagemUrl);
+
                 htmlBody = templateEngine.process("email/cupom", ctx);
             } else {
                 // fallback simples: texto plano contendo cupom

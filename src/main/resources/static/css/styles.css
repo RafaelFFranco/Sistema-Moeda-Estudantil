@@ -1,3 +1,5 @@
+@import url('https://fonts.cdnfonts.com/css/quantum-2');
+
 :root {
     /* Primary Colors */
     --royal-blue: #2563EB;
@@ -56,6 +58,8 @@
     --transition-fast: 150ms ease-in-out;
     --transition: 200ms ease-in-out;
     --transition-slow: 300ms ease-in-out;
+
+    background-image: url('/src/main/resources/static/img/wallpaper.jpg'); 
 }
 
 /* Base */
@@ -66,7 +70,7 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: 'Quantum', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     margin: 0;
     background: var(--gray-50);
     min-height: 100vh;

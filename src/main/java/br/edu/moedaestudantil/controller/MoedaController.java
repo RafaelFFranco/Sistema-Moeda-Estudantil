@@ -165,7 +165,7 @@ public class MoedaController {
             }
 
             try {
-                emailService.sendCupomEmail(aluno.getEmail(), nomeAluno, nomeVantagem, nomeEmpresa, codigoCupom, validade.format(fmt));
+                emailService.sendCupomEmail(aluno.getEmail(), nomeAluno, nomeVantagem, nomeEmpresa, codigoCupom, validade.format(fmt),v.getImageUrl());
             } catch (Exception e) {
                 // não interrompe o fluxo principal
             }

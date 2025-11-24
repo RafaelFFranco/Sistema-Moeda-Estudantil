@@ -39,6 +39,19 @@ Sistema de moeda virtual para estudantes com autenticação por perfil, dashboar
 
 > **Dica:** para testar sem e-mail real, mantenha `app.mail.enabled=false`. O serviço fará log da mensagem simulada no console.
 
+## Diagramas de Sequência
+
+# Cadastro de Vantagem
+<img src="https://github.com/RafaelFFranco/Sistema-Moeda-Estudantil/blob/main/Artefatos/DiagramaSequencia-CadastrarVantagens.png"/>
+
+# Visualização de Vantagem
+<img src="https://github.com/RafaelFFranco/Sistema-Moeda-Estudantil/blob/main/Artefatos/DiagramaSequencia-VisualizarVantagens.png"/>
+
+# Resgatar Vantagem
+
+<img src="https://github.com/RafaelFFranco/Sistema-Moeda-Estudantil/blob/main/Artefatos/DiagramaSequencia-TrocaDeVantagens.png"/>
+
+
 ## Como rodar
 
 | Opção | Comando | Observações |

@@ -38,6 +38,13 @@ Sistema de moeda virtual para estudantes com autenticação por perfil, dashboar
    ```
 
 > **Dica:** para testar sem e-mail real, mantenha `app.mail.enabled=false`. O serviço fará log da mensagem simulada no console.
+> 
+# Diagrama de Casos de Uso
+<img src="https://github.com/RafaelFFranco/Sistema-Moeda-Estudantil/blob/main/Artefatos/Diagrama%20Casos%20de%20Uso.jpg"/>
+
+# Diagrama de Classes
+<img src="https://github.com/RafaelFFranco/Sistema-Moeda-Estudantil/blob/main/Artefatos/Diagrama_Classes.jpeg"/>
+
 
 # Diagramas de Sequência
 

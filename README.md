@@ -57,6 +57,9 @@ Sistema de moeda virtual para estudantes com autenticação por perfil, dashboar
 ## Resgatar Vantagem
 <img src="https://github.com/RafaelFFranco/Sistema-Moeda-Estudantil/blob/main/Artefatos/DiagramaSequencia-TrocaDeVantagens.png"/>
 
+# Diagrama de Entidade Relacionamento
+<img src="https://github.com/RafaelFFranco/Sistema-Moeda-Estudantil/blob/main/Artefatos/Modelagem%20ER.png"/>
+
 
 ## Como rodar
 

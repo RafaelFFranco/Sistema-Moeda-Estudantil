@@ -44,11 +44,10 @@ Sistema de moeda virtual para estudantes com autenticação por perfil, dashboar
 ## Cadastro de Vantagem
 <img src="https://github.com/RafaelFFranco/Sistema-Moeda-Estudantil/blob/main/Artefatos/DiagramaSequencia-CadastrarVantagens.png"/>
 
-#3 Visualização de Vantagem
+## Visualização de Vantagem
 <img src="https://github.com/RafaelFFranco/Sistema-Moeda-Estudantil/blob/main/Artefatos/DiagramaSequencia-VisualizarVantagens.png"/>
 
-#3 Resgatar Vantagem
-
+## Resgatar Vantagem
 <img src="https://github.com/RafaelFFranco/Sistema-Moeda-Estudantil/blob/main/Artefatos/DiagramaSequencia-TrocaDeVantagens.png"/>
 
 

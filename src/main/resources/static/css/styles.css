@@ -72,7 +72,7 @@ body {
     margin: 0;
 
     background-image: url('/img/wallpaper.jpg'); 
-    background-size: 250px;          /* Ajuste o tamanho da imagem */
+    background-size: 350px;          /* Ajuste o tamanho da imagem */
     background-repeat: repeat;       /* repetindo no fundo */
     background-position: center;     /* centraliza se não repetir */
 

@@ -83,18 +83,6 @@ H2 Console (opcional): habilite `spring.h2.console.enabled=true` e acesse `http:
 
 Senhas legadas são migradas automaticamente graças ao `MigratingPasswordEncoder`, permitindo login mesmo que o hash ainda não exista.
 
-## O que foi implementado na Sprint 3
-
-- ✅ CRUD completo de Professores com associação a Instituições
-- ✅ Entidades e repositórios para Transação e Vantagem
-- ✅ Fluxos de transferência:
-  - Professor ➜ Aluno (com e-mail para ambos)
-  - Aluno ➜ Aluno (legado, mantido para compatibilidade)
-- ✅ Resgate de vantagem + geração de cupom e e-mail HTML
-- ✅ Feed de transações filtrado por perfil em `/moedas`
-- ✅ Scheduler semestral que credita +1000 moedas para cada professor
-- ✅ Layouts e dashboards dedicados para cada persona
-
 ## Funcionalidades
 
 ### Alunos
@@ -250,14 +238,6 @@ moeda-estudantil/
 │     └─ email/{cupom, transfer, transfer-professor}.html
 └─ Artefatos/ (diagramas UML e ER)
 ```
-
-## Próximos passos (Sprint 4)
-
-- [ ] Fluxo de validação de cupons pela empresa (scan/QrCode)
-- [ ] Aprovação de resgates pendentes e expiração automática de vantagens
-- [ ] Dashboard analítico com gráficos (saldo médio, top vantagens, ranking)
-- [ ] API REST pública para consumo por app mobile
-- [ ] Cobertura de testes automatizados + pipeline CI/CD
 
 ## Dados iniciais
 

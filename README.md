@@ -1,4 +1,4 @@
-# Moeda Estudantil – Release 2 (Sprint 4)
+# Moeda Estudantil – Release 2
 
 Sistema de moeda virtual para estudantes com autenticação por perfil, dashboards específicos e fluxo completo de distribuição, transferência e resgate de moedas acadêmicas.
 

@@ -83,6 +83,8 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   });
 
+  setupLoadingForms();
+
 });
 
 function showDeleteModal(onConfirm){
@@ -139,4 +141,39 @@ function performSearch(q){
   if(!path.startsWith('/alunos') && !path.startsWith('/empresas')) path = '/alunos';
   var url = path + (q ? ('?q=' + encodeURIComponent(q)) : '');
   window.location = url;
+}
+
+function setupLoadingForms(){
+  var forms = document.querySelectorAll('form[data-loading="true"]');
+  if(!forms.length) return;
+  forms.forEach(function(form){
+    if(form.__loadingHooked) return;
+    form.__loadingHooked = true;
+    form.addEventListener('submit', function(){
+      if(form.dataset.loadingShown === 'true') return;
+      form.dataset.loadingShown = 'true';
+      var message = form.getAttribute('data-loading-message') || 'Processando...';
+      showLoadingOverlay(message);
+    });
+  });
+}
+
+function showLoadingOverlay(message){
+  var overlay = document.getElementById('global-loading-overlay');
+  if(!overlay) return;
+  overlay.removeAttribute('hidden');
+  var textEl = overlay.querySelector('.loading-text');
+  if(textEl && message){
+    textEl.textContent = message;
+  }
+}
+
+function hideLoadingOverlay(){
+  var overlay = document.getElementById('global-loading-overlay');
+  if(!overlay) return;
+  overlay.setAttribute('hidden', 'hidden');
+  var textEl = overlay.querySelector('.loading-text');
+  if(textEl){
+    textEl.textContent = 'Processando...';
+  }
 }

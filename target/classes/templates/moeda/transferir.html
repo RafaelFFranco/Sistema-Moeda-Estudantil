@@ -26,7 +26,7 @@
     </div>
 
     <section class="card">
-      <form method="post" action="/moedas/transferir">
+      <form method="post" action="/moedas/transferir" data-loading="true" data-loading-message="Processando transferência...">
         <div class="form-grid">
           <div th:if="${isProfessor}">
             <label>Professor (origem)</label>

@@ -25,6 +25,9 @@
         <div style="flex:1">
           <div class="cupom-label">Cupom</div>
           <div class="cupom-code" th:text="${cupom}" style="margin-top:8px; font-size:28px; font-weight:900;"></div>
+          <div style="margin-top:12px;">
+            <img th:if="${cupomQrData != null}" th:src="${cupomQrData}" alt="QR Code" style="width:180px;height:180px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.08);" />
+          </div>
           <div class="alert-meta" th:if="${cupomValidade != null}" th:text="'Válido até: ' + ${cupomValidade}" style="margin-top:8px;"></div>
         </div>
         <div style="display:flex; flex-direction:column; gap:8px; align-items:flex-end;">

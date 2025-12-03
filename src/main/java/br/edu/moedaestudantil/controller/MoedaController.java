@@ -164,8 +164,17 @@ public class MoedaController {
                 nomeEmpresa = v.getEmpresaParceira().getNome();
             }
 
+            // Gera token QR compartilhado entre email e UI (cupom|UUID)
+            String qrContent = codigoCupom + "|" + java.util.UUID.randomUUID().toString();
+            String qrDataUri = null;
             try {
-                emailService.sendCupomEmail(aluno.getEmail(), nomeAluno, nomeVantagem, nomeEmpresa, codigoCupom, validade.format(fmt),v.getImageUrl());
+                qrDataUri = emailService.generateQrDataUri(qrContent, 300, 300);
+            } catch (Exception e) {
+                // não bloqueia o fluxo
+            }
+
+            try {
+                emailService.sendCupomEmail(aluno.getEmail(), nomeAluno, nomeVantagem, nomeEmpresa, codigoCupom, validade.format(fmt), v.getImageUrl(), qrContent);
             } catch (Exception e) {
                 // não interrompe o fluxo principal
             }
@@ -175,6 +184,9 @@ public class MoedaController {
             redirectAttributes.addFlashAttribute("tipoMensagem", "success");
             redirectAttributes.addFlashAttribute("cupom", codigoCupom);
             redirectAttributes.addFlashAttribute("cupomValidade", validade.format(fmt));
+            if (qrDataUri != null) {
+                redirectAttributes.addFlashAttribute("cupomQrData", qrDataUri);
+            }
 
             // Se o usuário autenticado for um aluno, redirecionamos para /alunos/me
             boolean isAlunoRedirect = false;

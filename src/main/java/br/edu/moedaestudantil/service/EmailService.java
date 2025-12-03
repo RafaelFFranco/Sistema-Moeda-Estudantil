@@ -11,6 +11,14 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import jakarta.mail.internet.MimeMessage;
+import java.io.ByteArrayOutputStream;
+import java.util.UUID;
+import org.springframework.core.io.ByteArrayResource;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
 
 @Service
 public class EmailService {
@@ -65,8 +73,30 @@ public class EmailService {
         }
     }
 
+    private byte[] generateQrCodeBytes(String text, int width, int height) throws Exception {
+        QRCodeWriter qrWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            MatrixToImageWriter.writeToStream(bitMatrix, "PNG", baos);
+            return baos.toByteArray();
+        }
+    }
+
+    /** Retorna um Data URI (base64) com a imagem PNG do QR code. */
+    public String generateQrDataUri(String text, int width, int height) {
+        try {
+            byte[] bytes = generateQrCodeBytes(text, width, height);
+            String base64 = java.util.Base64.getEncoder().encodeToString(bytes);
+            return "data:image/png;base64," + base64;
+        } catch (Exception e) {
+            logger.warn("Erro ao gerar data URI do QR: {}", e.getMessage());
+            return null;
+        }
+    }
+
     /**
      * Envia um email HTML renderizado a partir do template Thymeleaf `email/cupom.html`.
+     * Se `qrContent` for fornecido, será usado para gerar o QR; caso contrário será gerado um token interno.
      */
     public void sendCupomEmail(String to,
                               String nomeAluno,
@@ -74,7 +104,8 @@ public class EmailService {
                               String nomeEmpresa,
                               String cupom,
                               String cupomValidade,
-                              String imagemUrl) {
+                              String imagemUrl,
+                              String qrContent) {
         try {
             if (!mailEnabled) {
                 logger.info("Envio de email desabilitado (app.mail.enabled=false). Simulando envio HTML para: {}", to);
@@ -116,12 +147,32 @@ public class EmailService {
                         "<p>Válido até: " + (cupomValidade == null ? "" : cupomValidade) + "</p>";
             }
 
+            // Use o conteúdo de QR fornecido, ou gere um token único aqui (cupom|UUID).
+            if (qrContent == null || qrContent.isBlank()) {
+                qrContent = (cupom == null ? "" : cupom) + "|" + UUID.randomUUID().toString();
+            }
+            byte[] qrBytes = null;
+            try {
+                qrBytes = generateQrCodeBytes(qrContent, 300, 300);
+            } catch (Exception ex) {
+                logger.warn("Falha ao gerar QR code: {}", ex.getMessage());
+            }
+
             MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
             helper.setTo(to);
             helper.setFrom(mailUsername);
             helper.setSubject("Seu cupom de resgate - Moeda Estudantil");
             helper.setText(htmlBody, true);
+
+            // Anexa o QR code inline (cid:qrcode) para ser referenciado no template
+            try {
+                if (qrBytes != null) {
+                    helper.addInline("qrcode", new ByteArrayResource(qrBytes), "image/png");
+                }
+            } catch (Exception ex) {
+                logger.warn("Não foi possível anexar QR code ao email: {}", ex.getMessage());
+            }
 
             logger.debug("Enviando email HTML para: {} | from: {} | subject: {}", to, mailUsername, "Seu cupom de resgate - Moeda Estudantil");
             mailSender.send(message);

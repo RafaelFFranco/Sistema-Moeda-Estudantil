@@ -24,9 +24,9 @@ Sistema de moeda virtual para estudantes com autenticação por perfil, dashboar
 1. **Instale** Java 17 e Maven 3.9+.
 2. (Opcional) Provisionar PostgreSQL local. O projeto aponta por padrão para o banco Railway compartilhado:
    ```
-   SPRING_DATASOURCE_URL=jdbc:postgresql://yamabiko.proxy.rlwy.net:19408/railway?sslmode=require
+   SPRING_DATASOURCE_URL=jdbc:postgresql://interchange.proxy.rlwy.net:36070/railway
    SPRING_DATASOURCE_USERNAME=postgres
-   SPRING_DATASOURCE_PASSWORD=<ver .properties>
+   SPRING_DATASOURCE_PASSWORD=MfXzSIGrSkYJKQdEnhRaukVYXMZsuLQh
    ```
    Recomenda-se sobrescrever essas variáveis no ambiente local ou em um arquivo `application-local.properties` (não versionado).
 3. Configure o envio de e-mail ou desabilite com `app.mail.enabled=false`. Para Gmail:

@@ -4,6 +4,7 @@ import br.edu.moedaestudantil.model.EmpresaParceira;
 import br.edu.moedaestudantil.repository.EmpresaRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,7 @@ public class EmpresaService {
         return empresaRepository.findById(id); 
     }
 
+    @Transactional
     public EmpresaParceira save(EmpresaParceira empresa) {
         // Gerenciar senha
         if (empresa.getId() != null) {
@@ -43,6 +45,7 @@ public class EmpresaService {
                 }
             }
         } else {
+            // Novo cadastro - garantir que a senha seja criptografada
             if (empresa.getSenha() != null && !empresa.getSenha().isEmpty() && !isPasswordEncrypted(empresa.getSenha())) {
                 empresa.setSenha(passwordEncoder.encode(empresa.getSenha()));
             }

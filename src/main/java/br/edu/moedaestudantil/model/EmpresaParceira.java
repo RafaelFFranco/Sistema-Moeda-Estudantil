@@ -15,7 +15,7 @@ public class EmpresaParceira {
     @NotBlank
     private String nome;
 
-    @Email
+    @Email(message = "Email inválido")
     private String email;
 
     private String login;

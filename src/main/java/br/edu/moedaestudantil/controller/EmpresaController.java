@@ -11,6 +11,7 @@ import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,11 +53,25 @@ public class EmpresaController {
     }
 
     @PostMapping("/salvar")
-    public String save(@Valid @ModelAttribute("empresa") EmpresaParceira empresa, BindingResult bindingResult) {
+    public String save(@Valid @ModelAttribute("empresa") EmpresaParceira empresa, BindingResult bindingResult, Model model) {
+        // Tratar strings vazias como null para campos opcionais
+        if (empresa.getEmail() != null && empresa.getEmail().trim().isEmpty()) {
+            empresa.setEmail(null);
+        }
+        if (empresa.getLogin() != null && empresa.getLogin().trim().isEmpty()) {
+            empresa.setLogin(null);
+        }
+        
         if (bindingResult.hasErrors()) {
             return "empresa/form";
         }
-        empresaService.save(empresa);
+        try {
+            empresaService.save(empresa);
+        } catch (Exception e) {
+            // Log da exceção para debug
+            model.addAttribute("error", "Erro ao salvar empresa: " + e.getMessage());
+            return "empresa/form";
+        }
         return "redirect:/empresas";
     }
 
@@ -83,9 +98,16 @@ public class EmpresaController {
     /**
      * Tenta popular a empresa a partir do model (se já presente), do usuário autenticado (Principal)
      * ou, como último recurso, pega a primeira empresa cadastrada (ambiente de desenvolvimento).
+     * Este método NÃO é executado em requisições POST para evitar interferir com o binding do formulário.
      */
     @ModelAttribute("empresa")
-    public EmpresaParceira populateEmpresa(Model model, Principal principal) {
+    public EmpresaParceira populateEmpresa(Model model, Principal principal, HttpServletRequest request) {
+        // Não popular empresa em requisições POST (salvar/atualizar)
+        // O Spring já populou o objeto através do binding do formulário
+        if (request != null && "POST".equalsIgnoreCase(request.getMethod())) {
+            return null;
+        }
+        
         Object existing = model.getAttribute("empresa");
         if (existing instanceof EmpresaParceira) {
             return (EmpresaParceira) existing;

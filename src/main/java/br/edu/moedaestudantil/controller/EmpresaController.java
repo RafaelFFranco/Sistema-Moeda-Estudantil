@@ -11,7 +11,6 @@ import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -54,6 +53,12 @@ public class EmpresaController {
 
     @PostMapping("/salvar")
     public String save(@Valid @ModelAttribute("empresa") EmpresaParceira empresa, BindingResult bindingResult, Model model) {
+        // Garantir que empresa nunca seja null (caso o binding falhe completamente)
+        if (empresa == null) {
+            empresa = new EmpresaParceira();
+            model.addAttribute("empresa", empresa);
+        }
+        
         // Tratar strings vazias como null para campos opcionais
         if (empresa.getEmail() != null && empresa.getEmail().trim().isEmpty()) {
             empresa.setEmail(null);
@@ -66,7 +71,11 @@ public class EmpresaController {
             return "empresa/form";
         }
         try {
-            empresaService.save(empresa);
+            if (empresa.getId() == null) {
+                empresaService.save(empresa);   // CREATE
+            } else {
+                empresaService.update(empresa); // UPDATE
+            }
         } catch (Exception e) {
             // Log da exceção para debug
             model.addAttribute("error", "Erro ao salvar empresa: " + e.getMessage());
@@ -95,67 +104,6 @@ public class EmpresaController {
         return "redirect:/empresas";
     }
 
-    /**
-     * Tenta popular a empresa a partir do model (se já presente), do usuário autenticado (Principal)
-     * ou, como último recurso, pega a primeira empresa cadastrada (ambiente de desenvolvimento).
-     * Este método NÃO é executado em requisições POST para evitar interferir com o binding do formulário.
-     */
-    @ModelAttribute("empresa")
-    public EmpresaParceira populateEmpresa(Model model, Principal principal, HttpServletRequest request) {
-        // Não popular empresa em requisições POST (salvar/atualizar)
-        // O Spring já populou o objeto através do binding do formulário
-        if (request != null && "POST".equalsIgnoreCase(request.getMethod())) {
-            return null;
-        }
-        
-        Object existing = model.getAttribute("empresa");
-        if (existing instanceof EmpresaParceira) {
-            return (EmpresaParceira) existing;
-        }
-
-        EmpresaParceira byPrincipal = tryFindEmpresaByPrincipal(principal);
-        if (byPrincipal != null) {
-            return byPrincipal;
-        }
-
-        try {
-            List<EmpresaParceira> all = empresaService.findAll();
-            if (all != null && !all.isEmpty()) return all.get(0);
-        } catch (Exception ignored) { }
-
-        return null;
-    }
-
-    private EmpresaParceira tryFindEmpresaByPrincipal(Principal principal) {
-        if (principal == null) return null;
-        String username = principal.getName();
-        // tenta métodos comuns no service de forma segura por reflection
-        String[] methodNames = {"findByEmail", "findByUsuario", "findByLogin", "findByUsername", "findByUser", "findByUserEmail", "findByUsernameOrEmail"};
-        for (String name : methodNames) {
-            try {
-                Method m = empresaService.getClass().getMethod(name, String.class);
-                Object res = m.invoke(empresaService, username);
-                EmpresaParceira e = extractEmpresaFromResult(res);
-                if (e != null) return e;
-            } catch (NoSuchMethodException ignored) {
-                // método não existe, tenta próximo
-            } catch (Exception ignored) {
-            }
-        }
-        return null;
-    }
-
-    private EmpresaParceira extractEmpresaFromResult(Object res) {
-        if (res == null) return null;
-        if (res instanceof EmpresaParceira) return (EmpresaParceira) res;
-        if (res instanceof java.util.Optional) {
-            try {
-                Object val = ((java.util.Optional<?>) res).orElse(null);
-                if (val instanceof EmpresaParceira) return (EmpresaParceira) val;
-            } catch (Exception ignored) { }
-        }
-        return null;
-    }
 
     /**
      * Exponha as vantagens da empresa atual como "minhasVantagens" para as views.

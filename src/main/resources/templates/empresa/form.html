@@ -17,7 +17,7 @@
         <a class="btn btn-primary" th:href="@{/empresas/nova}" style="padding:8px 14px;">Criar como Empresa</a>
       </div>
       <form th:action="@{/empresas/salvar}" th:object="${empresa}" method="post">
-        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:if="${empresa.id != null}" th:field="*{id}">
         <div class="form-grid">
           <div>
             <label>Nome</label>

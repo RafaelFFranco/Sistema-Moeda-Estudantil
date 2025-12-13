@@ -33,24 +33,32 @@ public class EmpresaService {
 
     @Transactional
     public EmpresaParceira save(EmpresaParceira empresa) {
-        // Gerenciar senha
-        if (empresa.getId() != null) {
-            Optional<EmpresaParceira> empresaExistente = empresaRepository.findById(empresa.getId());
-            if (empresaExistente.isPresent()) {
-                EmpresaParceira empresaAntiga = empresaExistente.get();
-                if (empresa.getSenha() == null || empresa.getSenha().isEmpty()) {
-                    empresa.setSenha(empresaAntiga.getSenha());
-                } else if (!isPasswordEncrypted(empresa.getSenha())) {
-                    empresa.setSenha(passwordEncoder.encode(empresa.getSenha()));
-                }
-            }
-        } else {
-            // Novo cadastro - garantir que a senha seja criptografada
-            if (empresa.getSenha() != null && !empresa.getSenha().isEmpty() && !isPasswordEncrypted(empresa.getSenha())) {
-                empresa.setSenha(passwordEncoder.encode(empresa.getSenha()));
-            }
+        // Novo cadastro - garantir que a senha seja criptografada
+        if (empresa.getSenha() != null && !empresa.getSenha().isEmpty() && !isPasswordEncrypted(empresa.getSenha())) {
+            empresa.setSenha(passwordEncoder.encode(empresa.getSenha()));
         }
         return empresaRepository.save(empresa); 
+    }
+
+    @Transactional
+    public EmpresaParceira update(EmpresaParceira dados) {
+        EmpresaParceira empresa = empresaRepository.findById(dados.getId())
+            .orElseThrow(() -> new IllegalArgumentException("Empresa não encontrada com ID: " + dados.getId()));
+
+        empresa.setNome(dados.getNome());
+        empresa.setEmail(dados.getEmail());
+        empresa.setLogin(dados.getLogin());
+        
+        // Gerenciar senha: se não foi informada, mantém a atual; se foi informada, criptografa
+        if (dados.getSenha() == null || dados.getSenha().isEmpty()) {
+            // Mantém a senha atual
+        } else if (!isPasswordEncrypted(dados.getSenha())) {
+            empresa.setSenha(passwordEncoder.encode(dados.getSenha()));
+        } else {
+            empresa.setSenha(dados.getSenha());
+        }
+
+        return empresa;
     }
 
     private boolean isPasswordEncrypted(String password) {

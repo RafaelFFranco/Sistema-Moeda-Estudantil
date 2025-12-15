@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Trocar Moedas</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+  <div th:replace="fragments/header :: header"></div>
+
+  <div class="container trocar-moedas">
+    <div class="breadcrumbs"><a th:href="@{/}">Home</a> <span>/</span> <span>Trocar Moedas</span></div>
+
+    <main class="card">
+      <h2>Resgatar Vantagens</h2>
+      <div class="saldo-aluno">
+        <label>Saldo atual:</label>
+        <span th:text="${aluno != null ? aluno.saldoMoedas : 0}">0</span>
+      </div>
+
+      <section>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Imagem</th>
+              <th>Vantagem</th>
+              <th>Descrição</th>
+              <th>Custo (moedas)</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="v : ${vantagens}">
+              <td class="vantagem-image-cell">
+                <div style="width:120px; max-width:120px; height:80px; display:flex; align-items:center; justify-content:center;">
+                  <img th:if="${v.imageUrl != null and !#strings.isEmpty(v.imageUrl)}"
+                       th:src="${v.imageUrl}"
+                       alt="Imagem da vantagem"
+                       style="max-width:120px; width:120px; height:80px; object-fit:cover; border-radius:8px; display:block;" />
+
+                  <div th:if="${v.imageUrl == null or #strings.isEmpty(v.imageUrl)}"
+                       style="width:120px; height:80px; display:inline-flex; align-items:center; justify-content:center; background:#f3f4f6; color:#6b7280; border-radius:8px; border:1px dashed #e5e7eb; font-size:12px;">
+                    sem imagem
+                  </div>
+                </div>
+              </td>
+              <td th:text="${v.nome}"></td>
+              <td th:text="${v.descricao}"></td>
+              <td th:text="${v.custoMoedas}"></td>
+              <td>
+                <form th:action="@{/moedas/trocar}" method="post" data-loading="true" data-loading-message="Confirmando resgate...">
+                  <input type="hidden" name="vantagemId" th:value="${v.id}" />
+                  <button type="submit" class="btn">Resgatar</button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <div th:replace="fragments/footer :: footer"></div>
+  <script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Vantagens Disponíveis</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+    <div th:replace="fragments/header :: header"></div>
+
+    <div class="container">
+        <h1>Vantagens Disponíveis</h1>
+
+        <div th:if="${vantagens != null}">
+            <ul>
+                <li th:each="v : ${vantagens}">
+                    <div th:if="${v.imageUrl != null and #strings.isNotEmpty(v.imageUrl)}" style="margin-bottom:8px;">
+                        <img th:src="@{${v.imageUrl}}" alt="Imagem da vantagem" style="max-width:200px; height:auto; display:block;" />
+                        <div class="small muted" style="word-break:break-all;" th:text="${v.imageUrl}"></div>
+                    </div>
+                    <span th:text="${v.nome}">Nome da vantagem</span>
+                    <span th:text="${v.descricao}">Descrição</span>
+                    <span th:text="${v.custoMoedas}">0</span>
+
+                    <form th:action="@{/vantagem/{id}/delete(id=${v.id})}" method="post" style="display:inline">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" th:if="${_csrf != null}" />
+                        <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+
+        <a th:href="@{/}" class="btn">Voltar</a>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

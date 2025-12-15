@@ -1,0 +1,179 @@
+document.addEventListener('DOMContentLoaded', function(){
+  // delegate clicks on .confirm-delete
+  document.body.addEventListener('click', function(e){
+    var el = e.target.closest && e.target.closest('.confirm-delete');
+    if(!el) return;
+    e.preventDefault();
+    var href = el.getAttribute('href');
+    showDeleteModal(function(){ window.location = href; });
+  });
+
+  // modal close
+  document.body.addEventListener('click', function(e){
+    if(e.target.matches('.modal-backdrop') || e.target.closest('.btn-cancel')){
+      closeModal();
+    }
+  });
+
+  // Show/hide clear button based on input value
+  function toggleClearButton() {
+    var searchInput = document.getElementById('search-input');
+    var clearBtn = document.querySelector('.clear-btn');
+    if (searchInput && clearBtn) {
+      clearBtn.style.display = searchInput.value.length > 0 ? 'block' : 'none';
+    }
+  }
+
+  // search submit on Enter
+  var searchInput = document.getElementById('search-input');
+  if(searchInput){
+    // Check on input change
+    searchInput.addEventListener('input', toggleClearButton);
+    
+    // Initial check
+    toggleClearButton();
+    
+    // Submit on Enter
+    searchInput.addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        performSearch(searchInput.value);
+      }
+    });
+    
+    // Submit on form submit (e.g., when clicking search icon)
+    searchInput.form?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      performSearch(searchInput.value);
+    });
+  }
+
+  // Clear button handler
+  document.body.addEventListener('click', function(e){
+    if(e.target.closest('.clear-btn')) {
+      var searchInput = document.getElementById('search-input');
+      if(searchInput) {
+        searchInput.value = '';
+        searchInput.focus();
+        toggleClearButton();
+        // If we're on a search page, clear the search
+        var path = window.location.pathname;
+        if(path.includes('/alunos') || path.includes('/empresas')) {
+          window.location.href = path.split('?')[0];
+        }
+      }
+    }
+  });
+
+  // delegated handler: copy cupom from server-rendered modal
+  document.body.addEventListener('click', function(e){
+    var copyBtn = e.target.closest && e.target.closest('#btn-copy-modal');
+    if(!copyBtn) return;
+    var codeEl = document.querySelector('.cupom-code');
+    var text = codeEl ? codeEl.textContent.trim() : '';
+    if(!text) return;
+    if(navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){
+        showToast('Cupom copiado!', 'success');
+      }).catch(function(){
+        fallbackCopy(text);
+      });
+    } else {
+      fallbackCopy(text);
+    }
+  });
+
+  setupLoadingForms();
+
+});
+
+function showDeleteModal(onConfirm){
+  if(document.querySelector('.modal-backdrop')) return;
+  var backdrop = document.createElement('div');
+  backdrop.className = 'modal-backdrop fade-in';
+  backdrop.innerHTML = `
+    <div class="modal" role="dialog" aria-modal="true">
+      <h3>Confirmação</h3>
+      <p>Tem certeza que deseja excluir este registro? Esta ação não pode ser desfeita.</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary btn-cancel">Cancelar</button>
+        <button class="btn btn-primary btn-confirm">Confirmar</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(backdrop);
+  backdrop.querySelector('.btn-confirm').addEventListener('click', function(){ closeModal(); onConfirm && onConfirm(); });
+}
+
+function closeModal(){
+  var b = document.querySelector('.modal-backdrop');
+  if(b) b.remove();
+}
+
+// Fallback copy + small toast notification
+function fallbackCopy(text){
+  try{
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+    showToast('Cupom copiado!', 'success');
+  } catch(e){
+    showToast('Não foi possível copiar o cupom automaticamente. Selecione e copie manualmente.', 'error');
+  }
+}
+
+function showToast(message, type){
+  var t = document.createElement('div');
+  t.className = 'toast ' + (type === 'success' ? 'success' : (type === 'error' ? 'error' : ''));
+  t.textContent = message;
+  document.body.appendChild(t);
+  setTimeout(function(){ t.remove(); }, 2500);
+}
+
+function performSearch(q){
+  q = (q || '').trim();
+  // detect current path: if we are on alunos or empresas, reuse; else go to alunos
+  var path = window.location.pathname;
+  if(!path || path === '/' ) path = '/alunos';
+  if(!path.startsWith('/alunos') && !path.startsWith('/empresas')) path = '/alunos';
+  var url = path + (q ? ('?q=' + encodeURIComponent(q)) : '');
+  window.location = url;
+}
+
+function setupLoadingForms(){
+  var forms = document.querySelectorAll('form[data-loading="true"]');
+  if(!forms.length) return;
+  forms.forEach(function(form){
+    if(form.__loadingHooked) return;
+    form.__loadingHooked = true;
+    form.addEventListener('submit', function(){
+      if(form.dataset.loadingShown === 'true') return;
+      form.dataset.loadingShown = 'true';
+      var message = form.getAttribute('data-loading-message') || 'Processando...';
+      showLoadingOverlay(message);
+    });
+  });
+}
+
+function showLoadingOverlay(message){
+  var overlay = document.getElementById('global-loading-overlay');
+  if(!overlay) return;
+  overlay.removeAttribute('hidden');
+  var textEl = overlay.querySelector('.loading-text');
+  if(textEl && message){
+    textEl.textContent = message;
+  }
+}
+
+function hideLoadingOverlay(){
+  var overlay = document.getElementById('global-loading-overlay');
+  if(!overlay) return;
+  overlay.setAttribute('hidden', 'hidden');
+  var textEl = overlay.querySelector('.loading-text');
+  if(textEl){
+    textEl.textContent = 'Processando...';
+  }
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Form Empresa</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+  <div th:replace="fragments/header :: header"></div>
+
+  <div class="container">
+    <div class="breadcrumbs"><a th:href="@{/}">Home</a> <span>/</span> <a th:href="@{/empresas}">Empresas</a> <span>/</span> <span th:text="${empresa.id != null ? 'Editar' : 'Nova'}">Nova</span></div>
+
+    <section class="card">
+      <div class="signup-chooser" style="display:flex;gap:8px;margin-bottom:14px;">
+        <a class="btn btn-ghost" th:href="@{/alunos/novo}" style="padding:8px 14px;">Criar como Aluno</a>
+        <a class="btn btn-primary" th:href="@{/empresas/nova}" style="padding:8px 14px;">Criar como Empresa</a>
+      </div>
+      <form th:action="@{/empresas/salvar}" th:object="${empresa}" method="post">
+        <input type="hidden" th:if="${empresa.id != null}" th:field="*{id}">
+        <div class="form-grid">
+          <div>
+            <label>Nome</label>
+            <input th:field="*{nome}" />
+          </div>
+          <div>
+            <label>Email</label>
+            <input type="email" th:field="*{email}" />
+          </div>
+          <div>
+            <label>Login</label>
+            <input th:field="*{login}" />
+          </div>
+          <div>
+            <label>Senha</label>
+            <input th:field="*{senha}" type="password"/>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">Salvar</button>
+          <a class="btn btn-secondary" th:href="@{/empresas}">Cancelar</a>
+        </div>
+        <div style="margin-top:10px;">
+          <a th:href="@{/login}">Já tem conta? Entrar</a>
+        </div>
+      </form>
+    </section>
+
+    </section>
+    <div th:replace="fragments/footer :: footer"></div>
+  </div>
+  <script src="/js/main.js"></script>
+</body>
+</html>

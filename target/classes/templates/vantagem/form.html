@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Cadastrar Vantagem</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+    <div th:replace="fragments/header :: header"></div>
+
+    <div class="container">
+        <h2>Cadastrar Vantagem</h2>
+
+        <form th:if="${empresaId != null}"
+            th:action="@{/empresa/{id}/vantagem(id=${empresaId})}"
+            th:object="${vantagem}" method="post">
+            <!-- campos da vantagem -->
+            <div>
+                <label>Nome</label>
+                <input type="text" th:field="*{nome}" />
+            </div>
+            <div>
+                <label>Descrição</label>
+                <textarea th:field="*{descricao}"></textarea>
+            </div>
+            <div>
+                <label>URL da Imagem</label>
+                <input type="url" th:field="*{imageUrl}" placeholder="https://..." />
+            </div>
+            <!-- Campo de custo (número de moedas a descontar da carteira do aluno) -->
+            <div class="form-group">
+                <label for="custoMoedas">Custo (moedas)</label>
+                <input type="number" id="custoMoedas" min="0" step="1"
+                       th:field="*{custoMoedas}" class="form-control" />
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-save">Salvar</button>
+            </div>
+        </form>
+
+        <form th:if="${empresaId == null}"
+            th:action="@{/vantagem/salvar}"
+            th:object="${vantagem}" method="post">
+            <div>
+                <label>Empresa</label>
+                <select name="empresaParceiraId">
+                    <option th:each="emp : ${empresas}" th:value="${emp.id}" th:text="${emp.nome}"></option>
+                </select>
+            </div>
+            <!-- campos da vantagem -->
+            <div>
+                <label>Nome</label>
+                <input type="text" th:field="*{nome}" />
+            </div>
+            <div>
+                <label>Descrição</label>
+                <textarea th:field="*{descricao}"></textarea>
+            </div>
+            <div>
+                <label>URL da Imagem</label>
+                <input type="url" th:field="*{imageUrl}" placeholder="https://..." />
+            </div>
+            <!-- Campo de custo (número de moedas a descontar da carteira do aluno) -->
+            <div class="form-group">
+                <label for="custoMoedas">Custo (moedas)</label>
+                <input type="number" id="custoMoedas" min="0" step="1"
+                       th:field="*{custoMoedas}" class="form-control" />
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-save">Salvar</button>
+            </div>
+        </form>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

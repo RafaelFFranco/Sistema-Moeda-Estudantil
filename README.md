@@ -60,6 +60,11 @@ Sistema de moeda virtual para estudantes com autenticação por perfil, dashboar
 # Diagrama de Entidade Relacionamento
 <img src="https://github.com/RafaelFFranco/Sistema-Moeda-Estudantil/blob/main/Artefatos/Modelagem%20ER.png"/>
 
+# Diagrama de Comunicação
+<img src="https://github.com/RafaelFFranco/Sistema-Moeda-Estudantil/blob/main/Artefatos/DiagramaComunicacao.png">
+
+# Diagrama de Implantação
+<img src="https://github.com/RafaelFFranco/Sistema-Moeda-Estudantil/blob/main/Artefatos/DiagramadeImplementa%C3%A7%C3%A3o.png">
 
 ## Como rodar
 
